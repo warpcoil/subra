@@ -27,7 +27,7 @@
 #include "defs.h"
 BEGIN_DEF
 
-#include <stdint.h>
+#include "oslib/stdint.h"
 
 /* DO WE NEED A SEPARATE INCL FILE FOR THIS? */
 //#if defined(__GNU__)

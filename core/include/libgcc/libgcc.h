@@ -1,8 +1,8 @@
 #ifndef _LIBGCC_H
 #define _LIBGCC_H
 
-#include <stdint.h>
-#include <stddef.h>
+#include "oslib/stdint.h"
+#include "oslib/defs.h"
 
 //ALWAYS use GCC 5 or later, this has been tested with GCC 6.2.0
 

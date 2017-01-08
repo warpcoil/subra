@@ -24,8 +24,10 @@
 
 #include "hw-data.h"
 
-#define size_t uint32_t
-#define ssize_t int32_t
+//#define size_t uint32_t
+//#define ssize_t int32_t
+typedef long unsigned int size_t;
+typedef long signed int ssize_t;
 #define va_list void*
 
 #define u_int uint32_t

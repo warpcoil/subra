@@ -2,7 +2,7 @@
 # Makefile for GNU MAKE & GCC 6 or later
 # Untested with earlier versions.  Must use xxx-elf-gcc/ld NEVER xxx-linux-elf-gcc/ld
 
-CPP=$(PREFIX32)g++
+CXX=$(PREFIX32)g++
 CC=$(PREFIX32)gcc
 AR=$(PREFIX32)ar
 MKDIR=mkdir -p
@@ -39,7 +39,7 @@ C_OPT= $(EXTRAFLAGS) -Wall -O -finline-functions -fno-builtin -fno-stack-protect
 ASM_OPT = -x assembler-with-cpp -D__LINUX__ -D__VIRCSW__ -ffreestanding -m32
 
 .s.o:
-	$(CPP) $(ASM_OPT) -c $<
+	$(CXX) $(ASM_OPT) -c $<
 
 .c.o:
 	$(CC) $(C_OPT) -c $<

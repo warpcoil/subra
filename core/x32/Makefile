@@ -1,6 +1,6 @@
 #Porting to C++ (cleaner than legacy C)
 CC=$(PREFIX32)gcc
-CPP=$(PREFIX32)g++
+CXX=$(PREFIX32)g++
 AS=nasm -felf
 LD=$(PREFIX32)g++
 CP=cp
@@ -77,8 +77,8 @@ link: $(OBJECTS) link.ld
 	$(CP) kernel32.sys ../../iso/boot
 
 .s.o: $(AS) $<
-.c.o: $(CC) $(C_OPT) -c $(OBJECTS)
-.cpp.o: $(CPP) $(C_OPT) -c $(OBJECTS)
+.c.o: $(CC) $(CFLAGS) -c $(OBJECTS)
+.cpp.o: $(CXX) $(CXXFLAGS) -c $(OBJECTS)
 .asm.o: $(AS) $(N_OPT) $(NASMOBJECTS)
 
 #--start-group -los --end-group -o

@@ -206,3 +206,15 @@ void operator delete[](void *p)
 {
     dlfree(p);
 }
+
+void operator delete(void *p, size_t sz)
+{
+    sz = sz;
+    dlfree(p);
+}
+
+void operator delete[](void *p, size_t sz)
+{
+    sz = sz;
+    dlfree(p);
+}

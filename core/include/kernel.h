@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 #include "oslib/x-bios.h"
+#include "oslib/types.h"
 #include "oslib/cons.h"
 #include "oslib/oslibstdlib.h"
 #include "oslib/oslibstdio.h"
@@ -13,16 +14,15 @@
 #include "oslib/error.h"
 #include "oslib/tss-ctx.h"
 
-//Remove oslib size_t
-#undef size_t
-#define size_t unsigned int
-
 //Simple linked list malloc and free support with new and delete
 #include "memory.h"
 void *operator new(size_t size);
 void *operator new[](size_t size);
 void operator delete(void *p);
 void operator delete[](void *p);
+void operator delete(void *p, size_t sz);
+void operator delete[](void *p, size_t sz);
+
 
 //Shell
 #include "v7/v7.h"

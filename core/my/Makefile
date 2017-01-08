@@ -1,15 +1,13 @@
 #Porting to C++ (cleaner than legacy C)
+CXX=$(PREFIX32)g++
 CC=$(PREFIX32)gcc
-CPP=$(PREFIX32)g++
+AR=$(PREFIX32)ar
 AS=nasm -felf
 LD=$(PREFIX32)g++
 CP=cp
 MKDIR=mkdir -p
 
 .SUFFIXES: .o .c .cpp .S .asm
-
-NASMOBJECTS=gdtflush.o
-N_OPT= -felf
 
 MYOBJECTS = my_string.o
 
@@ -25,7 +23,7 @@ compile: $(MYOBJECTS)
 
 .s.o: $(AS) $<
 .c.o: $(CC) $(CFLAGS) -c $(MYOBJECTS)
-.cpp.o: $(CPP) $(CXXFLAGS) -c $(MYOBJECTS)
+.cpp.o: $(CXX) $(CXXFLAGS) -c $(MYOBJECTS)
 .asm.o: $(AS) $(N_OPT) $(NASMOBJECTS)
 
 #--start-group -los --end-group -o
