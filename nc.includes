@@ -1,0 +1,4 @@
+core/include
+core/include/oslib
+core/modules/include
+core/x32
