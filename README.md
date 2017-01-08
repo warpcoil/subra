@@ -29,7 +29,7 @@ A number of dependencies are required to build the toolchain that is capable of 
 sudo apt-get install python-software-properties curl
 sudo add-apt-repository ppa:git-core/ppa
 curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
-sudo apt-get install g++ nasm git libtool-bin autoconf make gettext bison flex genisoimage textinfo python-mako cmake git git-lfs
+sudo apt-get install g++ nasm git libtool-bin autoconf make gettext bison flex genisoimage texinfo python-mako cmake git git-lfs zlib1g-dev
 git lfs install
 ~~~~
 
