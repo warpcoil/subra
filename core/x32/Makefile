@@ -53,6 +53,7 @@ V7OBJECTS = $(V7DIR)v7.o
 MYOBJECTS = $(MYDIR)my_string.o
 
 OBJECTS = main.o \
+	support.o \
 	stacksmash.o \
 	commandline.o \
 	lls.o \

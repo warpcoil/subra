@@ -24,22 +24,25 @@ void operator delete(void *p, size_t sz);
 void operator delete[](void *p, size_t sz);
 
 
-//Shell
+//Shell / Execution Environment
 #include "v7/v7.h"
 
+//JavaScript Runtime Support Utilities
+#include "support.h"
+
 //Command line processing strict key=value format
-#include "commandline.h"
+//#include "commandline.h"
 
 //LLS - Low Level Structures [and tables] - but only the ones that are relevant today
-#include "lls.h"
+//#include "lls.h"
 
 //Basic console font
-#include "font.h"
+//#include "font.h"
 
 //Low Level Graphics Primitives
-#include "guiprimitive.h"
+//#include "guiprimitive.h"
 
 //Basic Graphics Driver[s] (of type GUIPrimitive)
-#include "vesalfb.h"
+//#include "vesalfb.h"
 
 #endif

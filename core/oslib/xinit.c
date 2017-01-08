@@ -91,16 +91,14 @@ void *l1_init(void)
   
   /* TODO! Need to map featuresXXX & Signature onto ll_arch!  */
   /* TODO! Need to check for CPU bugs!!           */
-  
-#ifdef __LL_DEBUG__
-  message("LL Architecture: %s\n", __LL_ARCH__);
-  message("CPU : %u\nFPU : %u\n", cpuInfo.X86_cpu, X86_fpu);
+
+  message("Architecture: %s\n", __LL_ARCH__);
+  message("CPU : %lu\nFPU : %u\n", cpuInfo.X86_cpu, X86_fpu);
   message("Signature : 0x%lx\nVendor: %s\n", cpuInfo.X86_signature,
 	  ll_arch.x86.vendor);
   message("Features #1: 0x%lx\n", cpuInfo.X86_IntelFeature_1);
   message("Features #2: 0x%lx\n", cpuInfo.X86_IntelFeature_2);
   message("Features #3: 0x%lx\n", cpuInfo.X86_StandardFeature);
-#endif /* __LL_DEBUG__ */
  
   IDT_init();
 

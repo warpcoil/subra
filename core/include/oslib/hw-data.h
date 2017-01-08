@@ -30,11 +30,7 @@ BEGIN_DEF
 #include "oslib/stdint.h"
 
 /* DO WE NEED A SEPARATE INCL FILE FOR THIS? */
-//#if defined(__GNU__)
-//#define __LL_ARCH__ "32/DJGPP C/COFF"
-//#elif defined(__LINUX__)
-#define __LL_ARCH__ "32/LINUX CrossCompiled/ELF"
-//#endif
+#define __LL_ARCH__ "Subra Core/ELF"
 
 #include "sel.h"
 

@@ -8,25 +8,8 @@ FILE * stdin;
 FILE * stdout;
 FILE * stderr;
 
-static GUIPrimitive * gfxDriver;
-
-//message function is called from javascript
-
-static v7_err js_msg(struct v7 *v7, v7_val_t *res) {
-
-    size_t l;
-
-    v7_val_t m = v7_arg(v7, 0);
-
-    const char * s = v7_get_string(v7, &m, &l);
-
-    message("%s", s);
-
-    * res = v7_mk_number(v7, (double)l);
-
-    return V7_OK;
-}
-
+//static GUIPrimitive * gfxDriver;
+static Support * support;
 
 void kernel_main(int argc, char * argv[]) {
 
@@ -35,13 +18,11 @@ void kernel_main(int argc, char * argv[]) {
     if (MultiBootInfo == NULL)
     {
             message("Error in Initialisation Code");
-            //l1_exit (-1);
     }
 
-    //WORD c = ll_context_save();
     ll_context_save();
 
-    message("Attempting Set up of SubraX\n\n");
+    //Virtual stdin, stdout and stderr for JS Runtime
 
     FILE cin;
     cin.filename = (char *)"::in";
@@ -54,30 +35,18 @@ void kernel_main(int argc, char * argv[]) {
     stdout = &cout;
     stderr = &cerr;
 
-/*** Region -- Memory Manager ***/
-//    Memory::init();
+/*** Region -- Early JS Runtime ***/
+
+    Support supp;
+    supp.JSInit();
+    support = &supp;
+
 /*** End Region -- Memory Manager ***/
 
     //Register the command line [if any]
-    CommandLine commandLine;
+//    CommandLine commandLine;
 
-    commandLine.RegisterCommandLine(argc, argv);
-
-    enum v7_err rcode = V7_OK;
-    struct v7 *v7 = v7_create();
-    v7_val_t result;
-
-    v7_set_method(v7, v7_get_global(v7), "message", &js_msg);
-
-    //Send (in javascript) to console "Hello World!" [test]
-    rcode = v7_exec(v7, "message(\"Hello World!\");", &result);
-
-    if (rcode != V7_OK) {
-        message("exec error: %i\n", (int)rcode);
-    }
-
-    v7_destroy(v7);
-
+//    commandLine.RegisterCommandLine(argc, argv);
 
 
 /*** Region -- Data Management initialisation ***/
@@ -96,59 +65,59 @@ void kernel_main(int argc, char * argv[]) {
 /*** Region -- Basic Level GUI for information presentation ***/
 
     //Check for gfx command line [forced], if not use autodetection [recommended]
-    VesaLFB * vesaLfb = new VesaLFB();
+//    VesaLFB * vesaLfb = new VesaLFB();
 
-    int arg = commandLine.HasArgument((char *)"gfx");
-    bool useVesaLfb = false;
-    if (arg > 0) {
-        char * displayDriver = commandLine.GetValue(arg);
-        message("Using forced %s driver\n\n", displayDriver);
+//    int arg = commandLine.HasArgument((char *)"gfx");
+//    bool useVesaLfb = false;
+//    if (arg > 0) {
+//        char * displayDriver = commandLine.GetValue(arg);
+//        message("Using forced %s driver\n\n", displayDriver);
 
-        if (strcmp(displayDriver, "vesalfb") == 0) {
-            useVesaLfb = true;
-        } else { //possible future vbe or other, for now only vesalfb
-            message("Unknown forced %s driver, falling back to other options", displayDriver);
-        }
-    } else {
-        //Check vesalfb is supported
-        useVesaLfb = vesaLfb->IsSupported();
-    }
+//        if (strcmp(displayDriver, "vesalfb") == 0) {
+//            useVesaLfb = true;
+//        } else { //possible future vbe or other, for now only vesalfb
+//            message("Unknown forced %s driver, falling back to other options", displayDriver);
+//        }
+//    } else {
+//        //Check vesalfb is supported
+//        useVesaLfb = vesaLfb->IsSupported();
+//    }
 
-    //Prioritise driver based on performance
-    if (useVesaLfb == true) {
+//    //Prioritise driver based on performance
+//    if (useVesaLfb == true) {
 
-        gfxDriver = vesaLfb; //gfxDriver is generic, vesalfb is linear frame buffer, polymorph
+//        gfxDriver = vesaLfb; //gfxDriver is generic, vesalfb is linear frame buffer, polymorph
 
-        //Check for mode override (basically don't use maximums
-        arg = commandLine.HasArgument((char*)"vesalfb");
+//        //Check for mode override (basically don't use maximums
+//        arg = commandLine.HasArgument((char*)"vesalfb");
 
-        uint16_t mode;
+//        uint16_t mode;
 
-        if (arg > 0) { //The user specified the mode they wish to use during the boot process
+//        if (arg > 0) { //The user specified the mode they wish to use during the boot process
 
-            char * modechr = commandLine.GetValue(arg);
-            mode = strtoul(modechr, 0, 10);
+//            char * modechr = commandLine.GetValue(arg);
+//            mode = strtoul(modechr, 0, 10);
 
-            message("mode: %x", mode);
+//            message("mode: %x", mode);
 
-        } else { //Use autodetection
+//        } else { //Use autodetection
 
-            mode = vesaLfb->GetMaximum(true); //Favour 32 bit depth over resolution
+//            mode = vesaLfb->GetMaximum(true); //Favour 32 bit depth over resolution
 
-        }
+//        }
 
-        mode = vesaLfb->GetMaximum(true); //Favour 32 bit depth over resolution
-        message("mode: %x", mode);
+//        mode = vesaLfb->GetMaximum(true); //Favour 32 bit depth over resolution
+//        message("mode: %x", mode);
 
         //Set mode
         //vesaLfb->SetResolution(mode);
 
-    } else {
+//    } else {
 
-        message("A graphics driver has either not been specified or is unavailable, halting");
-        asm volatile ("cli\nhlt");
+//        message("A graphics driver has either not been specified or is unavailable, halting");
+//        asm volatile ("cli\nhlt");
 
-    }
+//    }
 
 /*** End Region -- Basic Level GUI ***/
 
@@ -159,16 +128,16 @@ void kernel_main(int argc, char * argv[]) {
 
     //message("chr @ %x", chr);
 
-    GUIPrimitive::RGB colour;
+//    GUIPrimitive::RGB colour;
 
-    colour.Red = 255;
-    colour.Blue = 255;
-    colour.Green = 255;
+//    colour.Red = 255;
+//    colour.Blue = 255;
+//    colour.Green = 255;
 
-    for (int i=0; i<20; i++) {
-        //gfxDriver->DrawPixel(10 + i, 20, &colour);
-        //vesaLfb->DrawPixel(10 + i, 20, &colour);
-    }
+//    for (int i=0; i<20; i++) {
+//        //gfxDriver->DrawPixel(10 + i, 20, &colour);
+//        //vesaLfb->DrawPixel(10 + i, 20, &colour);
+//    }
 }
 
 /* C++ support functions for new and delete */

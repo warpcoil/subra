@@ -1,6 +1,6 @@
 #Porting to C++ (cleaner than legacy C)
 CC=$(PREFIX32)gcc
-CPP=$(PREFIX32)g++
+CXX=$(PREFIX32)g++
 AS=nasm -felf
 LD=$(PREFIX32)g++
 CP=cp
@@ -24,6 +24,6 @@ compile: $(V7OBJECTS)
 
 .s.o: $(AS) $<
 .c.o: $(CC) $(CFLAGS) -c $(V7OBJECTS)
-.cpp.o: $(CPP) $(CXXFLAGS) -c $(V7OBJECTS)
+.cpp.o: $(CXX) $(CXXFLAGS) -c $(V7OBJECTS)
 
 #--start-group -los --end-group -o

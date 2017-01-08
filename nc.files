@@ -260,3 +260,5 @@ core/x32/memory.cpp
 core/x32/stacksmash.c
 core/x32/vesalfb.cpp
 core/Makefile
+core/include/support.h
+core/x32/support.cpp
