@@ -33,18 +33,26 @@ sudo apt-get install g++ nasm git libtool-bin autoconf make gettext bison flex g
 git lfs install
 ~~~~
 
-TODO::  Upload Compiler Sources to a Web Server
+Substitute as appropriate depending on your platform
 
 Within a bash shell:
 
 ~~~~
 git clone https://github.com/warpcoil/subra.git
+cd subra
 make toolchain
 make
 ~~~~
 
-TODO::  Give instructions on how to compile compiler and then build the platform
+This will firstly clone the kernel and it's core components and then download a modified version of binutils and GCC and so forth (it takes a while).  Afterwards this will build the toolchain and platform which will result in an iso in the root directory.
 
 ## How do I run
 
 TODO::  Explain how to launch iso in virtualbox and/or qemu
+
+## License
+
+The platform is intended as GPL Version 3, however, it is not usable in a commercial environment for 2 reasons
+
+1. it's incomplete and doesn't do much apart from print "Hello World!" in JavaScript
+2. [v7](https://github.com/cesanta/v7) requires a commercial license
