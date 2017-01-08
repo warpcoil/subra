@@ -36,3 +36,7 @@ tools/toolbuilder/isl*
 tools/toolbuilder/mpc*
 tools/toolbuilder/mpfr*
 
+# Solution User Options (although keep solution for opening)
+subra/.vs/*
+*.opendb
+
