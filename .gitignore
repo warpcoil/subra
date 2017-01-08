@@ -23,4 +23,16 @@
 *.a
 *.lib
 
+# Archive -- Compiler
+tools/compiler/*
+tools/build/*
+obj/*
+tools/toolbuilder/archive/*
+tools/toolbuilder/binutils*
+tools/toolbuilder/gcc*
+tools/toolbuilder/gdb*
+tools/toolbuilder/gmp*
+tools/toolbuilder/isl*
+tools/toolbuilder/mpc*
+tools/toolbuilder/mpfr*
 

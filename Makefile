@@ -54,6 +54,7 @@ getarchive:
 toolchain:
 	mkdir -p $(abspath tools/compiler)
 	mkdir -p $(abspath tools/build)
+	cd tools/toolbuilder && tar -xf archive.tar.gz
 	ARCHES="i386 x86_64" EMULATION="elf" OUTBUILDDIR="$(abspath tools/build)" OUTBINDIR="$(abspath tools/compiler)" make -C tools/toolbuilder toolscui
 
 devenv:

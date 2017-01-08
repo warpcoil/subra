@@ -23,7 +23,25 @@ Absolutely nothing yet, although it boots, checks VESA presence and runs a littl
 
 ## How do I compile
 
+A number of dependencies are required to build the toolchain that is capable of building the platform, assuming a Ubuntu 64 bit host:
+
+~~~~
+sudo apt-get install python-software-properties curl
+sudo add-apt-repository ppa:git-core/ppa
+curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+sudo apt-get install g++ nasm git libtool-bin autoconf make gettext bison flex genisoimage textinfo python-mako cmake git git-lfs
+git lfs install
+~~~~
+
 TODO::  Upload Compiler Sources to a Web Server
+
+Within a bash shell:
+
+~~~~
+git clone https://github.com/warpcoil/subra.git
+make toolchain
+make
+~~~~
 
 TODO::  Give instructions on how to compile compiler and then build the platform
 

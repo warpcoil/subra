@@ -2,3 +2,16 @@ core/include
 core/include/oslib
 core/modules/include
 core/x32
+core/include/my
+core/include/warp
+core/include/sys
+core/include/bits
+core/include/v7
+core/include/libgcc
+core/my
+core/libgcc
+core/v7/tests/common
+core/v7/tests
+core/oslib
+core/v7
+core

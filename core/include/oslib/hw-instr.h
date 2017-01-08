@@ -137,7 +137,7 @@ INLINE_OP void smartsave_fpu(TSS *t)
 
 INLINE_OP void reset_fpu(void) { __asm__ __volatile__ ("fninit"); }
 
-#if 0
+//#if 0
 /* OK, now everything is clear... We test the NE bit to see if the
  * CPU is using the internal mechanism for reporting FPU errors or not...
  */
@@ -166,7 +166,7 @@ INLINE_OP int check_fpu(void)
 	: "eax" );
     return(result);
 }
-#endif
+//#endif
 
 INLINE_OP void init_fpu(void)
 {
