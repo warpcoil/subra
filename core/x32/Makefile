@@ -6,6 +6,7 @@ LD=$(PREFIX32)g++
 CP=cp
 GCCDIR=../obj/libgcc/
 OSLDIR=../obj/oslib/
+MINIZDIR=../obj/miniz/
 V7DIR=../obj/v7/
 MYDIR=../obj/my/
 
@@ -46,7 +47,10 @@ OSLOBJECTS = $(OSLDIR)xinfo.o \
 	$(OSLDIR)losrt.o \
 	$(OSLDIR)time.o \
 	$(OSLDIR)math.o \
-	$(OSLDIR)setjmp.o
+	$(OSLDIR)setjmp.o \
+	$(OSLDIR)assert.o
+
+MINIZOBJECTS = $(MINIZDIR)miniz.o 
 
 V7OBJECTS = $(V7DIR)v7.o
 
@@ -74,7 +78,7 @@ LD_OPT= $(EXTRAFLAGS) -Bstatic -Tlink.ld -s -nostartfiles -nostdlib
 all: link
 
 link: $(OBJECTS) link.ld
-	$(LD) $(LD_OPT) -o kernel32.sys $(GCCOBJECTS) $(OSLOBJECTS) $(V7OBJECTS) $(MYOBJECTS) $(OBJECTS)
+	$(LD) $(LD_OPT) -o kernel32.sys $(GCCOBJECTS) $(OSLOBJECTS) $(MINIZOBJECTS) $(V7OBJECTS) $(MYOBJECTS) $(OBJECTS)
 	$(CP) kernel32.sys ../../iso/boot
 
 .s.o: $(AS) $<

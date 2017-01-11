@@ -187,9 +187,17 @@
     <ClCompile Include="..\..\core\libgcc\__udivdi3.c" />
     <ClCompile Include="..\..\core\libgcc\__udivmoddi4.c" />
     <ClCompile Include="..\..\core\libgcc\__umoddi3.c" />
+    <ClCompile Include="..\..\core\miniz\example1.c" />
+    <ClCompile Include="..\..\core\miniz\example2.c" />
+    <ClCompile Include="..\..\core\miniz\example3.c" />
+    <ClCompile Include="..\..\core\miniz\example4.c" />
+    <ClCompile Include="..\..\core\miniz\example5.c" />
+    <ClCompile Include="..\..\core\miniz\example6.c" />
+    <ClCompile Include="..\..\core\miniz\miniz.c" />
     <ClCompile Include="..\..\core\my\my_string.cpp" />
     <ClCompile Include="..\..\core\my\my_string_test.cpp" />
     <ClCompile Include="..\..\core\my\my_vector_test.cpp" />
+    <ClCompile Include="..\..\core\oslib\assert.c" />
     <ClCompile Include="..\..\core\oslib\ccpu.c" />
     <ClCompile Include="..\..\core\oslib\ctxsw.c" />
     <ClCompile Include="..\..\core\oslib\fpu.c" />
@@ -225,6 +233,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\core\libgcc\Makefile" />
+    <None Include="..\..\core\miniz\Makefile" />
     <None Include="..\..\core\my\Makefile" />
     <None Include="..\..\core\oslib\cpu2.s" />
     <None Include="..\..\core\oslib\ctx.s" />
@@ -241,6 +250,9 @@
     <None Include="..\..\core\v7\ReleaseNotes.md" />
     <None Include="..\..\core\x32\link.ld" />
     <None Include="..\..\core\x32\Makefile" />
+    <None Include="..\..\Folders.md" />
+    <None Include="..\..\Makefile" />
+    <None Include="..\..\README.md" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\core\my\README_STRING.txt" />

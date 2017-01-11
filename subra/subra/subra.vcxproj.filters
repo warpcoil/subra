@@ -34,20 +34,35 @@
     <Filter Include="Header Files\v7">
       <UniqueIdentifier>{40bb946d-1e99-4d95-bd49-ebcec25e3054}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\libgcc">
-      <UniqueIdentifier>{124a511a-4311-43a1-9652-0d0e0856b7b3}</UniqueIdentifier>
+    <Filter Include="Source Files\core">
+      <UniqueIdentifier>{a2fe965a-47f9-4aa7-980d-7e84e9896e7b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\my">
-      <UniqueIdentifier>{685fa084-480b-4c5c-9fad-390724199c94}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\oslib">
+    <Filter Include="Source Files\core\oslib">
       <UniqueIdentifier>{b1a1e0b1-66ee-47c7-bce1-d4de05abd4e3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\v7">
+    <Filter Include="Source Files\core\my">
+      <UniqueIdentifier>{685fa084-480b-4c5c-9fad-390724199c94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core\libgcc">
+      <UniqueIdentifier>{124a511a-4311-43a1-9652-0d0e0856b7b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core\v7">
       <UniqueIdentifier>{68291464-da3f-4aba-a162-dce71efe4110}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\x32">
+    <Filter Include="Source Files\core\x32">
       <UniqueIdentifier>{77724971-4059-47d6-ae39-a56c4a3a56b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\rt">
+      <UniqueIdentifier>{4c01bcca-92e4-4288-b769-4f9454a6da6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\miniz">
+      <UniqueIdentifier>{d1c92575-3775-49f2-85d0-4f507d0a1595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core\miniz">
+      <UniqueIdentifier>{d79a2f87-335c-4b7f-8a46-8b75ac94e75f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core\x64">
+      <UniqueIdentifier>{7b48e7e5-4043-4dfc-9dea-53f0c6d11375}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -216,194 +231,230 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\core\libgcc\__divdi3.c">
-      <Filter>Source Files\libgcc</Filter>
+      <Filter>Source Files\core\libgcc</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\libgcc\__divmoddi4.c">
-      <Filter>Source Files\libgcc</Filter>
+      <Filter>Source Files\core\libgcc</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\libgcc\__moddi3.c">
-      <Filter>Source Files\libgcc</Filter>
+      <Filter>Source Files\core\libgcc</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\libgcc\__udivdi3.c">
-      <Filter>Source Files\libgcc</Filter>
+      <Filter>Source Files\core\libgcc</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\libgcc\__udivmoddi4.c">
-      <Filter>Source Files\libgcc</Filter>
+      <Filter>Source Files\core\libgcc</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\libgcc\__umoddi3.c">
-      <Filter>Source Files\libgcc</Filter>
+      <Filter>Source Files\core\libgcc</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\libgcc\icc.c">
-      <Filter>Source Files\libgcc</Filter>
+      <Filter>Source Files\core\libgcc</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\libgcc\implicit.c">
-      <Filter>Source Files\libgcc</Filter>
+      <Filter>Source Files\core\libgcc</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\my\my_string.cpp">
-      <Filter>Source Files\my</Filter>
+      <Filter>Source Files\core\my</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\my\my_string_test.cpp">
-      <Filter>Source Files\my</Filter>
+      <Filter>Source Files\core\my</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\my\my_vector_test.cpp">
-      <Filter>Source Files\my</Filter>
+      <Filter>Source Files\core\my</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\oslib\ccpu.c">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\oslib\ctxsw.c">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\oslib\fpu.c">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\oslib\idtinit.c">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\oslib\irq.c">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\oslib\losrt.c">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\oslib\math.c">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\oslib\setjmp.c">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\oslib\time.c">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\oslib\vm86.c">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\oslib\x1.c">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\oslib\xbios.c">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\oslib\xconv.c">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\oslib\xdosf.c">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\oslib\xdosm.c">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\oslib\xinfo.c">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\oslib\xinit.c">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\oslib\xsystab.c">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\v7\v7.c">
-      <Filter>Source Files\v7</Filter>
+      <Filter>Source Files\core\v7</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\x32\commandline.cpp">
-      <Filter>Source Files\x32</Filter>
+      <Filter>Source Files\core\x32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\x32\datamanager.cpp">
-      <Filter>Source Files\x32</Filter>
+      <Filter>Source Files\core\x32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\x32\font.cpp">
-      <Filter>Source Files\x32</Filter>
+      <Filter>Source Files\core\x32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\x32\guiprimitive.cpp">
-      <Filter>Source Files\x32</Filter>
+      <Filter>Source Files\core\x32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\x32\kernel8font.c">
-      <Filter>Source Files\x32</Filter>
+      <Filter>Source Files\core\x32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\x32\kernel12font.c">
-      <Filter>Source Files\x32</Filter>
+      <Filter>Source Files\core\x32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\x32\kernel16font.c">
-      <Filter>Source Files\x32</Filter>
+      <Filter>Source Files\core\x32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\x32\lls.cpp">
-      <Filter>Source Files\x32</Filter>
+      <Filter>Source Files\core\x32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\x32\main.cpp">
-      <Filter>Source Files\x32</Filter>
+      <Filter>Source Files\core\x32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\x32\memory.cpp">
-      <Filter>Source Files\x32</Filter>
+      <Filter>Source Files\core\x32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\x32\stacksmash.c">
-      <Filter>Source Files\x32</Filter>
+      <Filter>Source Files\core\x32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\x32\support.cpp">
-      <Filter>Source Files\x32</Filter>
+      <Filter>Source Files\core\x32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\core\x32\vesalfb.cpp">
-      <Filter>Source Files\x32</Filter>
+      <Filter>Source Files\core\x32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\core\miniz\example1.c">
+      <Filter>Source Files\core\miniz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\core\miniz\example2.c">
+      <Filter>Source Files\core\miniz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\core\miniz\example3.c">
+      <Filter>Source Files\core\miniz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\core\miniz\example4.c">
+      <Filter>Source Files\core\miniz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\core\miniz\example5.c">
+      <Filter>Source Files\core\miniz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\core\miniz\example6.c">
+      <Filter>Source Files\core\miniz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\core\miniz\miniz.c">
+      <Filter>Source Files\core\miniz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\core\oslib\assert.c">
+      <Filter>Source Files\core\oslib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\core\libgcc\Makefile">
-      <Filter>Source Files\libgcc</Filter>
+      <Filter>Source Files\core\libgcc</Filter>
     </None>
     <None Include="..\..\core\my\Makefile">
-      <Filter>Source Files\my</Filter>
+      <Filter>Source Files\core\my</Filter>
     </None>
     <None Include="..\..\core\oslib\cpu2.s">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </None>
     <None Include="..\..\core\oslib\ctx.s">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </None>
     <None Include="..\..\core\oslib\exc.s">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </None>
     <None Include="..\..\core\oslib\Makefile">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </None>
     <None Include="..\..\core\oslib\mem.s">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </None>
     <None Include="..\..\core\oslib\x0.s">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </None>
     <None Include="..\..\core\oslib\xsys0.s">
-      <Filter>Source Files\oslib</Filter>
+      <Filter>Source Files\core\oslib</Filter>
     </None>
     <None Include="..\..\core\v7\CONTRIBUTING.md">
-      <Filter>Source Files\v7</Filter>
+      <Filter>Source Files\core\v7</Filter>
     </None>
     <None Include="..\..\core\v7\LICENSE">
-      <Filter>Source Files\v7</Filter>
+      <Filter>Source Files\core\v7</Filter>
     </None>
     <None Include="..\..\core\v7\Makefile">
-      <Filter>Source Files\v7</Filter>
+      <Filter>Source Files\core\v7</Filter>
     </None>
     <None Include="..\..\core\v7\Makefile.old">
-      <Filter>Source Files\v7</Filter>
+      <Filter>Source Files\core\v7</Filter>
     </None>
     <None Include="..\..\core\v7\README.md">
-      <Filter>Source Files\v7</Filter>
+      <Filter>Source Files\core\v7</Filter>
     </None>
     <None Include="..\..\core\v7\ReleaseNotes.md">
-      <Filter>Source Files\v7</Filter>
+      <Filter>Source Files\core\v7</Filter>
     </None>
     <None Include="..\..\core\x32\link.ld">
-      <Filter>Source Files\x32</Filter>
+      <Filter>Source Files\core\x32</Filter>
     </None>
     <None Include="..\..\core\x32\Makefile">
-      <Filter>Source Files\x32</Filter>
+      <Filter>Source Files\core\x32</Filter>
+    </None>
+    <None Include="..\..\Makefile">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\..\README.md">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\..\Folders.md">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\..\core\miniz\Makefile">
+      <Filter>Source Files\core\miniz</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\core\my\README_STRING.txt">
-      <Filter>Source Files\my</Filter>
+      <Filter>Source Files\core\my</Filter>
     </Text>
     <Text Include="..\..\core\my\README_VECTOR.txt">
-      <Filter>Source Files\my</Filter>
+      <Filter>Source Files\core\my</Filter>
     </Text>
   </ItemGroup>
 </Project>

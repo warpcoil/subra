@@ -28,7 +28,8 @@ COMMON_OBJS = xinfo.o \
 	xbios.o \
 	time.o \
 	math.o \
-	setjmp.o
+	setjmp.o \
+	assert.o
 
 GNU_S_OBJS = x0.o xsys0.o cpu2.o exc.o ctx.o mem.o
 

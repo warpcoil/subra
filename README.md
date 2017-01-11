@@ -13,6 +13,7 @@ A more proactive approach to writing less code has taken place, so in many cases
 
 * [libgcc](https://gcc.gnu.org/onlinedocs/gccint/Libgcc.html) ported for __div* and __udiv
 * [libc](https://www.gnu.org/software/libc/) portions of GNU C Library used for definitions (headers only)
+* [miniz](https://github.com/richgel999/miniz) miniz for decompression of js module
 * [my namespace](https://sourceforge.net/projects/simplecstringclass/) string and vector classes
 * [oslib](http://oslib.sourceforge.net/) a heavily modified and reduced GCC 6 compatible OS Support Library
 * [v7](https://github.com/cesanta/v7) a modified JavaScript Engine targetting Subra Core
