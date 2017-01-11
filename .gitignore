@@ -36,6 +36,9 @@ tools/toolbuilder/isl*
 tools/toolbuilder/mpc*
 tools/toolbuilder/mpfr*
 
+# Internal Stuff Not Required for source
+internal/*
+
 # Solution User Options (although keep solution for opening)
 subra/.vs/*
 *.opendb

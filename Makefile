@@ -42,11 +42,10 @@ clean:
 releaserun:
 	$(call check_extract,"\033[0;31mWARNING: Using the builtin emulator is highly recommended, use "make toolchain" first")
 	qemu-system-i386 -m size=128 -cdrom SubraX.iso -boot d -sdl
-	#$(GENERIC)/qemu-system-i386 -m size=128 -cdrom SubraX.iso -boot d -sdl -s -S
 
-debugrun:
-	$(call check_extract,"\033[0;31mWARNING: Using the builtin debugger is highly recommended, use "make toolchain" first")
-	$(GENERIC)/qemu-system-i386 -m size=128 -cdrom SubraX.iso -boot d -sdl -s -S & i386-elf-gdb --symbols=$(abspath kernel.sym) --eval-command="target remote localhost:1234"
+# debugrun:
+#	$(call check_extract,"\033[0;31mWARNING: Using the builtin debugger is highly recommended, use "make toolchain" first")
+#	$(GENERIC)/qemu-system-i386 -m size=128 -cdrom SubraX.iso -boot d -sdl -s -S & i386-elf-gdb --symbols=$(abspath kernel.sym) --eval-command="target remote localhost:1234"
 
 getarchive:
 	make -C tools/toolbuilder getarchive

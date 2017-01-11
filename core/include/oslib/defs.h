@@ -47,5 +47,14 @@
 #define FILE(a)
 #define ASMFILE(a)
 #endif
+
+#ifndef __inline__
+#define __inline__ __inline
+#endif
+
+#ifndef __asm__
+#define __asm__ __asm
+#endif
+
 #endif
 
