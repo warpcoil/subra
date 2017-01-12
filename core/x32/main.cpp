@@ -10,6 +10,7 @@ FILE * stderr;
 
 //static GUIPrimitive * gfxDriver;
 static Support * support;
+static Module * module;
 
 void kernel_main(int argc, char * argv[]) {
 
@@ -18,11 +19,23 @@ void kernel_main(int argc, char * argv[]) {
     if (MultiBootInfo == NULL)
     {
             message("Error in Initialisation Code");
+            __asm__ __volatile__("hlt");
     }
 
     ll_context_save();
 
-    //Virtual stdin, stdout and stderr for JS Runtime
+/*** Region -- Modules Initialisation (zip files) ***/
+    //Load modules -- contains kernel runtime encoded as JavaScript
+    //Everything is written in JS
+    Module mod;
+    if (!mod.Initialise(MultiBootInfo)) {
+        message("Unable to load modules, system halted\n");
+        __asm__ __volatile__("hlt");
+    }
+    module = &mod;
+
+/*** End Region -- Modules Initialisation (zip files) ***/
+/*** Region -- Virtual stdin, stdout and stderr for JS Runtime ***/
 
     FILE cin;
     cin.filename = (char *)"::in";
@@ -35,13 +48,33 @@ void kernel_main(int argc, char * argv[]) {
     stdout = &cout;
     stderr = &cerr;
 
+/*** End Region -- Virtual stdin, stdout and stderr for JS Runtime ***/
 /*** Region -- Early JS Runtime ***/
 
     Support supp;
     supp.JSInit();
     support = &supp;
 
-/*** End Region -- Memory Manager ***/
+/*** End Region -- Early JS Runtime ***/
+/*** Region -- Physical Module Loading ***/
+    //Firstly get all loadable (JavaScript) files
+    //There can be n zips containing amongst other files, .js files
+    //We're interested in *.js at the minute
+    warp::Vector<Module::ModuleFile> * jsFiles = new warp::Vector<Module::ModuleFile>();
+
+    if (!module->ListFilesOfType(".JS", jsFiles)) {
+        message("Platform Initialisation Error, System Halted\n");
+        __asm__ __volatile__ ("hlt");
+    }
+
+    for (size_t i=0; i<jsFiles->size(); i++) {
+        Module::ModuleFile * modFile = jsFiles->at(i);
+        if (!module->Exec(modFile->ModuleId, modFile->Filename)) {
+            message("Error Loading %s, continuing as normal\n", modFile->Filename.c_str());
+        }
+    }
+
+/*** End Region -- Physical Module Loading ***/
 
     //Register the command line [if any]
 //    CommandLine commandLine;

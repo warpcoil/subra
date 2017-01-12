@@ -58,6 +58,8 @@ MYOBJECTS = $(MYDIR)my_string.o
 
 OBJECTS = main.o \
 	support.o \
+	zip.o \
+	module.o \
 	stacksmash.o \
 	commandline.o \
 	lls.o \

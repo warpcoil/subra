@@ -121,6 +121,8 @@ namespace my
     /// swap contents
     void swap( String& );
 
+    ssize_t lastIndexOf(char c);
+
     String   substr(const size_type pos, size_type length) const;
 
     // unchecked access:

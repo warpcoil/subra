@@ -30,7 +30,7 @@ A number of dependencies are required to build the toolchain that is capable of 
 sudo apt-get install python-software-properties curl
 sudo add-apt-repository ppa:git-core/ppa
 curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
-sudo apt-get install g++ nasm git libtool-bin autoconf make gettext bison flex genisoimage texinfo python-mako cmake git git-lfs zlib1g-dev
+sudo apt-get install g++ nasm git libtool-bin autoconf make gettext bison flex genisoimage texinfo python-mako cmake git git-lfs zlib1g-dev zip
 git lfs install
 ```
 
@@ -52,7 +52,7 @@ This will firstly clone the kernel and it's core components and then download a 
 Install [cygwin](https://www.cygwin.com) as you normally would and ensure these dependencies are present:
 
 ```bash
-gcc-core gcc-g++ nasm libtool autoconf make gettext bison flex genisoimage texinfo python-mako cmake zlib-devel
+gcc-core gcc-g++ nasm libtool autoconf make gettext bison flex genisoimage texinfo python-mako cmake zlib-devel zip
 ```
 
 Install [git](https://git-scm.com/download) and [git-lfs](https://github.com/git-lfs/git-lfs/releases)

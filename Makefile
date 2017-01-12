@@ -27,13 +27,14 @@ run: releaserun
 release:
 	$(call check_extract,"\033[0;31mWARNING: Using the builtin compiler is highly recommended, use "make toolchain" first")
 	PREFIX32=$(PREFIX32) PREFIX64=$(PREFIX64) make -C core
+	cd rt && zip -r -D ../iso/boot/kmods.zip *
 	genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -A SubraX -o SubraX.iso iso
 
-debug:
-	$(call check_extract,"\033[0;31mWARNING: Using the builtin compiler is highly recommended, use "make toolchain" first")
-	PREFIX32=$(PREFIX32) PREFIX64=$(PREFIX64) EXTRAFLAGS="-g" make -C core
-	$(PREFIX32)objcopy --only-keep-debug $(abspath iso/boot/kernel32.sys) $(abspath kernel32.sym)
-	genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -A SubraX -o SubraX.iso iso
+#debug:
+#	$(call check_extract,"\033[0;31mWARNING: Using the builtin compiler is highly recommended, use "make toolchain" first")
+#	PREFIX32=$(PREFIX32) PREFIX64=$(PREFIX64) EXTRAFLAGS="-g" make -C core
+#	$(PREFIX32)objcopy --only-keep-debug $(abspath iso/boot/kernel32.sys) $(abspath kernel32.sym)
+#	genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -A SubraX -o SubraX.iso iso
 
 clean:
 	find core/ -name "*.o" -delete

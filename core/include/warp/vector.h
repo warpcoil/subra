@@ -63,9 +63,15 @@ public:
 
     T * operator [] (size_t elementId) const { //Read, identical to at() -- non conformant
 
+        return at(elementId);
+
+    }
+
+    T * at (size_t elementId) { //alias for [], both behave identically or NULL if not found
+
         if (elementId > (size() - 1))
         {
-            message("Vector only has %i elements: Overflow");
+            message("Vector only has %i elements: Overflow", (int)size());
             halt();
         }
 
@@ -82,11 +88,6 @@ public:
         halt();
 
         return NULL;
-
-    }
-    T * at (size_t elementId) { //alias for [], both behave identically or NULL if not found
-
-        return this[elementId];
 
     }
 

@@ -201,6 +201,18 @@ namespace my {
       return String(lhs) += rhs;
   }
 
+  ssize_t String::lastIndexOf(char c) {
+
+      size_t len = strlen(p);
+
+      for (size_t i = len - 1; i >= 0; i--) {
+          if (p[i] == c)
+              return i;
+      }
+
+      return -1;
+  }
+
   String String::substr(const size_type pos, size_type length) const
   {
       String s;
