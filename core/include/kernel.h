@@ -33,7 +33,7 @@ void operator delete[](void *p, size_t sz);
 #include "v7/v7.h"
 
 //JavaScript Runtime Support Utilities
-#include "support.h"
+#include "jssupport.h"
 
 //Command line processing strict key=value format
 //#include "commandline.h"

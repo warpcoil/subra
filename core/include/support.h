@@ -1,20 +1,16 @@
-#ifndef SUPPORT
-#define SUPPORT
+#ifndef __SUPPORT_H__
+#define __SUPPORT_H__
 
-#include "v7/v7.h"
+#include "oslib/stdint.h"
 
 class Support {
-private:
-    struct v7 * rt;
 public:
     enum Result {
-        OK,
-        FAIL
+        OK, FAIL
     };
-    Result Init();
-    Result Exec(char * jsCode, uint64_t * result);
+
+    virtual Result Init();
+    virtual Result Exec(char * jsCode, uint64_t * result);
 };
 
-
-#endif // SUPPORT
-
+#endif // SUPPORT_H

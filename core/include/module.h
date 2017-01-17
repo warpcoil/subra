@@ -4,7 +4,7 @@
 #include "warp/vector.h"
 #include "oslib/mb-info.h"
 #include "zip.h"
-#include "support.h"
+#include "jssupport.h"
 
 class Module {
 private:

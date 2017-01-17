@@ -1,7 +1,11 @@
+rt/vesa.js
 Folders.md
 LICENSE
 README.md
+core/include/jssupport.h
 core/include/miniz/miniz.h
+core/include/support.h
+core/x32/jssupport.cpp
 rt/hello.js
 core/x32/zip.cpp
 core/include/bits/wchar.h
@@ -93,7 +97,6 @@ core/include/oslib/x-dosmem.h
 core/include/partition.h
 core/include/pci.h
 core/include/port.h
-core/include/support.h
 core/include/sxramdisk.h
 core/include/sys/cdefs.h
 core/include/syscall.h
@@ -273,7 +276,6 @@ core/x32/read.c
 core/x32/sbmp.c
 core/x32/stacksmash.c
 core/x32/string.c
-core/x32/support.cpp
 core/x32/sxi.c
 core/x32/sxramdisk.c
 core/x32/syscall.c

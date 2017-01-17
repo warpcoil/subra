@@ -1,7 +1,7 @@
 #include "vesalfb.h"
 #include "kernel.h"
 
-void emulateInt10(uint32_t intnum, struct registers r) {
+void emulateInt(uint32_t intnum, struct registers r) {
     TSS *vm86_tss;
     DWORD *bos;
     DWORD isr_cs, isr_eip;
@@ -20,8 +20,8 @@ void emulateInt10(uint32_t intnum, struct registers r) {
             *(bos - 6) -= 6;
 
             IRQTableEntry = (DWORD *)(0L);
-            isr_cs = ((IRQTableEntry[0x6d]) & 0xffff0000) >> 16;
-            isr_eip = ((IRQTableEntry[0x6d]) & 0x0000ffff);
+            isr_cs = ((IRQTableEntry[intnum]) & 0xffff0000) >> 16;
+            isr_eip = ((IRQTableEntry[intnum]) & 0x0000ffff);
 
             *(bos - 8) = isr_cs;
             *(bos - 9) = isr_eip;
@@ -62,7 +62,7 @@ bool VesaLFB::IsSupported() {
     //Check vesa linear framebuffer support
     vm86_init();
 
-    l1_int_bind(0x6d, (void *)emulateInt10);
+    l1_int_bind(0x6d, (void *)emulateInt);
 
     X_REGS16 ir, rr;
     X_SREGS16 sr;

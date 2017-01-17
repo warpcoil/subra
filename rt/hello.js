@@ -1,2 +1,2 @@
 
-message("%s", "Hello World");
+message("%s", "Hello World\n");

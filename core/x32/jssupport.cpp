@@ -1,9 +1,11 @@
-#include "support.h"
+#include "jssupport.h"
 #include "kernel.h"
 
 #define STD_SIZE	0
 #define SHORT_SIZE	1
 #define LONG_SIZE	2
+
+//- Calls internal message() function from JavaScript
 static v7_err js_msg(struct v7 *rt, v7_val_t *res) {
 
 	size_t l;
@@ -106,7 +108,30 @@ static v7_err js_msg(struct v7 *rt, v7_val_t *res) {
 	return V7_OK;
 }
 
-Support::Result Support::Init() {
+//Structure translation
+//Types supported [u]byte, [u]word, [u]doubleword and [u]quadword
+static v7_err js_sizeof(struct v7 * rt, v7_val_t * res) {
+
+}
+
+//Structure serialisation -- from js object descriptor, create a structure and serialise at addr
+static v7_err js_serialise(struct v7 *rt, v7_val_t * res) {
+
+}
+
+//Structure deserialisation -- from __attribute__packed typedef, to js object, based on js object descriptor
+static v7_err js_deserialise(struct v7 *rt, v7_val_t * res) {
+
+}
+
+//Emulated interrupt -- uses vm6 task, to register an interrupt
+static v7_err js_emulated_int(struct v7 *rt, v7_val_t *res) {
+
+
+
+}
+
+JSSupport::Result JSSupport::Init() {
 
 	//Initialise support functions such as in out etc
 	enum v7_err rcode = V7_OK;
@@ -118,6 +143,15 @@ Support::Result Support::Init() {
 
 	//Send (in javascript) to console "Hello World!" [test]
 	rcode = v7_exec(rt, "message(\"Initialising JavaScript Runtime Components\n\");", &result);
+
+    //sizeof(struct descriptor)
+    v7_set_method(rt, v7_get_global(rt), "sizeof", &js_sizeof);
+    //serialise(js struct to packed type)
+    v7_set_method(rt, v7_get_global(rt), "serialise", &js_serialise);
+    //deserialise(packed type to js struct)
+    v7_set_method(rt, v7_get_global(rt), "deserialise", &js_deserialise);
+    //perform interrupt under emulation
+    v7_set_method(rt, v7_get_global(rt), "emulatedInt", &js_emulated_int);
 
     //Just for testing, print a message in printf format, and do some math
     //It works fine, so we'll just comment it out
@@ -132,7 +166,7 @@ Support::Result Support::Init() {
     //v7_destroy(v7); -- TODO:: AT POWERDOWN
 }
 
-Support::Result Support::Exec(char * jsCode, uint64_t * result) {
+JSSupport::Result JSSupport::Exec(char * jsCode, uint64_t * result) {
 
     //Execute the UTF8/ASCII code within built in engine
     //Check for success

@@ -9,7 +9,7 @@ FILE * stdout;
 FILE * stderr;
 
 //static GUIPrimitive * gfxDriver;
-static Support * support;
+static Support * support; //-- Generic Interface, currently only JS
 static Module * module;
 
 void kernel_main(int argc, char * argv[]) {
@@ -51,7 +51,7 @@ void kernel_main(int argc, char * argv[]) {
 /*** End Region -- Virtual stdin, stdout and stderr for JS Runtime ***/
 /*** Region -- Early JS Runtime ***/
 
-    Support supp;
+    JSSupport supp;
     supp.Init();
     support = &supp;
 
