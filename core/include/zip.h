@@ -12,7 +12,7 @@ private:
 public:
     bool LoadZip(unsigned char * data, size_t size);
     bool ListFiles(warp::Vector<my::String> * vec);
-    unsigned char * OpenFile(my::String filename);
+    char * OpenFile(my::String filename);
 
 };
 

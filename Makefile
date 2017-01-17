@@ -27,7 +27,7 @@ run: releaserun
 release:
 	$(call check_extract,"\033[0;31mWARNING: Using the builtin compiler is highly recommended, use "make toolchain" first")
 	PREFIX32=$(PREFIX32) PREFIX64=$(PREFIX64) make -C core
-	cd rt && zip -r -D ../iso/boot/kmods.zip *
+	cd rt && zip -r -ll -D ../iso/boot/kmods.zip *
 	genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -A SubraX -o SubraX.iso iso
 
 #debug:
@@ -41,8 +41,12 @@ clean:
 	find core/ -name "*.sys" -delete
 
 releaserun:
+ifeq ($(OS),Windows_NT)
+	qemu-system-i386 -m size=128 -cdrom SubraX.iso -boot d -L C:\\compiler\\home\\core\\subra\\internal\\Bios
+else
 	$(call check_extract,"\033[0;31mWARNING: Using the builtin emulator is highly recommended, use "make toolchain" first")
 	qemu-system-i386 -m size=128 -cdrom SubraX.iso -boot d -sdl
+endif
 
 # debugrun:
 #	$(call check_extract,"\033[0;31mWARNING: Using the builtin debugger is highly recommended, use "make toolchain" first")

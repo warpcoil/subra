@@ -36,7 +36,7 @@ bool Zip::ListFiles(warp::Vector<my::String> *vec) {
     return true;
 }
 
-unsigned char * Zip::OpenFile(my::String filename) {
+char * Zip::OpenFile(my::String filename) {
 
     mz_zip_archive_file_stat stat;
 
@@ -53,9 +53,10 @@ unsigned char * Zip::OpenFile(my::String filename) {
 
                 if (mz_zip_reader_file_stat(zipArchive, i, &stat)) {
 
-                    unsigned char * data = (unsigned char *)dlmalloc((size_t)stat.m_uncomp_size);
+                    char * data = (char *)dlmalloc((size_t)stat.m_uncomp_size);
 
                     if (mz_zip_reader_extract_file_to_mem(zipArchive, filename.c_str(), data, (size_t)stat.m_uncomp_size, 0)) {
+                        data[stat.m_uncomp_size - 1] = 0; //Null terminate, parse as string
                         return data;
                     }
                 }

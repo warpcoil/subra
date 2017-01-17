@@ -52,7 +52,7 @@ void kernel_main(int argc, char * argv[]) {
 /*** Region -- Early JS Runtime ***/
 
     Support supp;
-    supp.JSInit();
+    supp.Init();
     support = &supp;
 
 /*** End Region -- Early JS Runtime ***/
@@ -63,13 +63,16 @@ void kernel_main(int argc, char * argv[]) {
     warp::Vector<Module::ModuleFile> * jsFiles = new warp::Vector<Module::ModuleFile>();
 
     if (!module->ListFilesOfType(".JS", jsFiles)) {
-        message("Platform Initialisation Error, System Halted\n");
+        message("Platform Initialisation Error, No Modules To Load!\n\nSystem Halted\n");
         __asm__ __volatile__ ("hlt");
     }
 
+    uint64_t result;
+
     for (size_t i=0; i<jsFiles->size(); i++) {
         Module::ModuleFile * modFile = jsFiles->at(i);
-        if (!module->Exec(modFile->ModuleId, modFile->Filename)) {
+        message("Executing: %s\n", modFile->Filename.c_str());
+        if (!module->Exec(modFile->ModuleId, modFile->Filename, support, &result)) {
             message("Error Loading %s, continuing as normal\n", modFile->Filename.c_str());
         }
     }

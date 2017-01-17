@@ -75,6 +75,9 @@ public:
             halt();
         }
 
+        if (elementId == 0)
+            return elements->el;
+
         size_t e = 0;
 
         while (elements->next != NULL) {

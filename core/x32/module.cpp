@@ -1,6 +1,8 @@
 #include "module.h"
 #include "kernel.h"
 
+char extensionBuffer[5];
+
 bool Module::Initialise(struct multiboot_info * MultiBootInfo) {
 
 	//Get a reference to all modules and store for safe keeping
@@ -16,8 +18,6 @@ bool Module::Initialise(struct multiboot_info * MultiBootInfo) {
 
     message("Loading Kernel Modules * %lu\n", MultiBootInfo->mods_count);
 
-    char extensionBuffer[5];
-
     for (unsigned long i=0; i<MultiBootInfo->mods_count; i++) {
 
         unsigned long offset = MultiBootInfo->mods_addr + (i * sizeof(struct mod_list));
@@ -25,7 +25,10 @@ bool Module::Initialise(struct multiboot_info * MultiBootInfo) {
         struct mod_list * module = (struct mod_list *)offset;
 
         //Check that it is a zip, by checking extension
-        extensionBuffer[4] = 0;
+        for (size_t j=0; j<5; j++) {
+            extensionBuffer[j] = 0; //Null Terminator
+        }
+
         char * cmdline = (char *)module->cmdline;
         int len = strlen(cmdline);
         int counter = 0;
@@ -100,6 +103,11 @@ bool Module::ListFilesOfType(my::String extension, warp::Vector<ModuleFile> *vec
     if (items->size() == 0)
         return false;
 
+    if (extension.size() > 4) {
+        message("Module::ListFilesOfType: Only Supports Extension Lengths of upto 3, such as .js, .exe etc");
+        return false;
+    }
+
     extension.toUpper();
 
     size_t extLength = extension.length();
@@ -108,13 +116,27 @@ bool Module::ListFilesOfType(my::String extension, warp::Vector<ModuleFile> *vec
 
     for (size_t i=0; i<numModules; i++) {
 
-        size_t numFiles = items->at(i)->files->size();
+        ModuleItem * module = items->at(i);
+
+        size_t numFiles = module->files->size();
 
         for (size_t j=0; j<numFiles; j++) {
 
-            ZipItem * file = items->at(i)->files->at(j);
+            ZipItem * file = module->files->at(j);
 
-            if (extension.compare(0, extLength, * file->filename) == 0) {
+            for (size_t j=0; j<5; j++) {
+                extensionBuffer[j] = 0; //Null Terminator
+            }
+
+            size_t len = file->filename->length();
+            size_t counter = 0;
+
+            for (size_t j = len - extLength; j < len; j++) {
+                extensionBuffer[counter] = file->filename->at(j);
+                counter++;
+            }
+
+            if (extension.compare(0, extLength, extensionBuffer) == 0) {
                 ModuleFile * modFile = new ModuleFile;
 
                 modFile->ModuleId = i;
@@ -127,11 +149,14 @@ bool Module::ListFilesOfType(my::String extension, warp::Vector<ModuleFile> *vec
 
     }
 
-    return true;
+    if (vec->size() > 0)
+        return true;
+
+    return false;
 
 }
 
-unsigned char * Module::Open(int moduleId, my::String filename) {
+char * Module::Open(int moduleId, my::String filename) {
 
     if (items == NULL)
         return false;
@@ -160,11 +185,16 @@ unsigned char * Module::Open(int moduleId, my::String filename) {
     return NULL;
 }
 
-bool Module::Exec(int moduleId, my::String filename) {
+bool Module::Exec(int moduleId, my::String filename, Support * runtime, uint64_t * result) {
 
-    unsigned char * exec = Open(moduleId, filename);
+    char * exec = Open(moduleId, filename);
 
-    message("%s\n", exec);
+    if (exec == NULL)
+        return false; //Unable to open file
+
+    if (runtime->Exec(exec, result) != Support::OK) {
+        return false;
+    }
 
     return true;
 }

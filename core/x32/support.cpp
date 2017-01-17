@@ -106,7 +106,7 @@ static v7_err js_msg(struct v7 *rt, v7_val_t *res) {
 	return V7_OK;
 }
 
-Support::Result Support::JSInit() {
+Support::Result Support::Init() {
 
 	//Initialise support functions such as in out etc
 	enum v7_err rcode = V7_OK;
@@ -119,16 +119,34 @@ Support::Result Support::JSInit() {
 	//Send (in javascript) to console "Hello World!" [test]
 	rcode = v7_exec(rt, "message(\"Initialising JavaScript Runtime Components\n\");", &result);
 
-
-
-
-	rcode = v7_exec(rt, "message(\"%s%i\n\", \"Hello\", 2+2);", &result);
+    //Just for testing, print a message in printf format, and do some math
+    //It works fine, so we'll just comment it out
+    //rcode = v7_exec(rt, "message(\"%s%i\n\", \"Hello\", 2+2);", &result);
 
 	if (rcode != V7_OK) {
-		message("fail");
+        message("Unable to initialise JavaScript Runtime");
 		return FAIL;
 	}
 
 	return OK;
-	//v7_destroy(v7);
+    //v7_destroy(v7); -- TODO:: AT POWERDOWN
 }
+
+Support::Result Support::Exec(char * jsCode, uint64_t * result) {
+
+    //Execute the UTF8/ASCII code within built in engine
+    //Check for success
+    enum v7_err rcode = V7_OK;
+
+    rcode = v7_exec(rt, jsCode, result);
+
+    if (rcode != V7_OK) {
+        //Log error
+        message("Support::JSExec: %s\n", v7_get_parser_error(rt));
+        return FAIL;
+    }
+
+    return OK;
+}
+
+

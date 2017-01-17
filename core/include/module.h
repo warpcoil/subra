@@ -4,6 +4,7 @@
 #include "warp/vector.h"
 #include "oslib/mb-info.h"
 #include "zip.h"
+#include "support.h"
 
 class Module {
 private:
@@ -26,8 +27,8 @@ public:
 
 	bool Initialise(struct multiboot_info * MultiBootInfo);
     bool ListFilesOfType(my::String extension, warp::Vector<ModuleFile> * vec);
-    unsigned char * Open(int moduleId, my::String filename);
-    bool Exec(int moduleId, my::String filename);
+    char * Open(int moduleId, my::String filename);
+    bool Exec(int moduleId, my::String filename, Support * runtime, uint64_t *result);
     void Close(unsigned char * data);
 };
 

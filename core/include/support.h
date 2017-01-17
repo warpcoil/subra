@@ -11,7 +11,8 @@ public:
         OK,
         FAIL
     };
-    Result JSInit();
+    Result Init();
+    Result Exec(char * jsCode, uint64_t * result);
 };
 
 
