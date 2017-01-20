@@ -1,6 +1,10 @@
 #ifndef mujs_h
 #define mujs_h
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* noreturn is a GCC extension */
 #ifdef __GNUC__
 #define JS_NORETURN __attribute__((noreturn))
@@ -198,5 +202,9 @@ int js_compare(js_State *J, int *okay);
 int js_equal(js_State *J);
 int js_strictequal(js_State *J);
 int js_instanceof(js_State *J);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

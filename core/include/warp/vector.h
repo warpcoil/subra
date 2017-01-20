@@ -89,7 +89,7 @@ public:
             e++;
         }
 
-        message("Overflow has occurred in a place where it cannot occur with id: %i", elementId);
+        message("Overflow has occurred in a place where it cannot occur with id: %u", elementId);
         halt();
 
         return NULL;

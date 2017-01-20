@@ -6,107 +6,99 @@
 #define LONG_SIZE	2
 
 ////- Calls internal message() function from JavaScript
-//static v7_err js_msg(struct v7 *rt, v7_val_t *res) {
+static void js_message(js_State * J) {
 
-//	size_t l;
+    size_t l;
 
-//	//varargs
-//	//unsigned long numArgs = v7_argc(rt);
-//	v7_val_t valFormat = v7_arg(rt, 0);
-//	char * format = (char *)v7_get_string(rt, &valFormat, &l);
+    //varargs
+    char * format = (char *)js_tostring(J, 1);
 
-//	int len = strlen(format);
+    int len = strlen(format);
 
-//	int arg = 1;
-//	size_t x;
-//	char formatArgs[9];
-//	v7_val_t val;
+    int arg = 2;
+    char formatArgs[9];
 
-//	for (int i = 0; i<len; i++) {
-//		if (format[i] == '%') {
-//			i++;
+    for (int i = 0; i<len; i++) {
+        if (format[i] == '%') {
+            i++;
 
-//			switch (format[i]) {
-//			case '%': { //Modulus
-//				cputc('%');
-//				break;
-//			}
-//			case 'c': { //Char
-//				val = v7_arg(rt, arg);
-//				cputc(v7_get_string(rt, &val, &x)[0]);
-//				arg++;
-//				break;
-//			}
-//			case 's': { //String
-//				val = v7_arg(rt, arg);
-//				message("%s", v7_get_string(rt, &val, &x));
-//				arg++;
-//				break;
-//			}
-//			case 'i': //Integer
-//			case 'd': //Integer
-//			case 'u': //Unsigned Integer
-//			case 'x': //Hexadecimal
-//			case 'l': //Modifier - long
-//			case 'n': //Modifier - short
-//			case 'h': //Modifier - short
-//			case '+': //Modifier - +
-//			case '-': //Modifier - -
-//			case '1':
-//			case '2':
-//			case '3':
-//			case '4':
-//			case '5':
-//			case '6':
-//			case '7':
-//			case '8':
-//			case '9':
-//			case '0': {
-//				//Clear format string
-//				int j = 0;
+            switch (format[i]) {
+            case '%': { //Modulus
+                cputc('%');
+                break;
+            }
+            case 'c': { //Char
+                cputc(js_tostring(J, arg)[0]);
+                arg++;
+                break;
+            }
+            case 's': { //String
+                message("%s", js_tostring(J, arg));
+                arg++;
+                break;
+            }
+            case 'i': //Integer
+            case 'd': //Integer
+            case 'u': //Unsigned Integer
+            case 'x': //Hexadecimal
+            case 'l': //Modifier - long
+            case 'n': //Modifier - short
+            case 'h': //Modifier - short
+            case '+': //Modifier - +
+            case '-': //Modifier - -
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+            case '0': {
+                //Clear format string
+                int j = 0;
 
-//				for (j = 0; j < 9; j++)
-//					formatArgs[j] = 0;
+                for (j = 0; j < 9; j++)
+                    formatArgs[j] = 0;
 
-//				j = 1;
-//				formatArgs[0] = '%';
+                j = 1;
+                formatArgs[0] = '%';
 
-//				//Build up format string upto Non-Modifier
-//				if ((format[i] != 'i') && (format[i] != 'd') && (format[i] != 'u') && (format[i] != 'x')) {
-//					while (((format[i + j] != 'i') || (format[i + j] != 'd') || (format[i + j] != 'u') || (format[i + j] != 'x')) && (j < 8)) {
-//						formatArgs[j] = format[i + j];
-//						j++;
-//					}
-//					formatArgs[j] = format[i + j];
-//				}
-//				else {
-//					formatArgs[j] = format[i];
-//					j++;
-//				}
+                //Build up format string upto Non-Modifier
+                if ((format[i] != 'i') && (format[i] != 'd') && (format[i] != 'u') && (format[i] != 'x')) {
+                    while (((format[i + j] != 'i') || (format[i + j] != 'd') || (format[i + j] != 'u') || (format[i + j] != 'x')) && (j < 8)) {
+                        formatArgs[j] = format[i + j];
+                        j++;
+                    }
+                    formatArgs[j] = format[i + j];
+                }
+                else {
+                    formatArgs[j] = format[i];
+                    j++;
+                }
 
-//				val = v7_arg(rt, arg);
-//				message(formatArgs, v7_get_int(rt, val));
+                message(formatArgs, js_tointeger(J, arg));
 
-//				i += j;
+                i += j;
 
-//				arg++;
-//				break;
-//			}
-//			default:
-//				//Malformed
-//				message("Malformed Format Args\n");
-//			}
+                arg++;
+                break;
+            }
+            default:
+                //Malformed
+                message("Malformed Format Args\n");
+            }
 
-//		}
-//		else {
-//			cputc(format[i]);
-//		}
-//	}
+        }
+        else {
+            cputc(format[i]);
+        }
+    }
 
-//	*res = v7_mk_number(rt, (double)l);
+    js_pushnumber(J, (double)l);
 
-//	return V7_OK;
-//}
+}
 
 ////Structure translation
 ////Types supported [u]byte, [u]word, [u]doubleword and [u]quadword
@@ -207,16 +199,17 @@
 
 JSSupport::Result JSSupport::Init() {
 
-//	//Initialise support functions such as in out etc
-//	enum v7_err rcode = V7_OK;
-//	rt = v7_create();
+    //Initialise support functions such as in out etc
+    if (state == NULL)
+        state = js_newstate(NULL, NULL, JS_STRICT); //ES5 strict
 
-//	v7_val_t result;
+    js_newcfunction(state, js_message, "message", MAXARGS);
+    js_setglobal(state, "message");
+    js_newcfunction(state, js_message, "printf", MAXARGS);
+    js_setglobal(state, "printf");
 
-//	v7_set_method(rt, v7_get_global(rt), "message", &js_msg);
-
-//	//Send (in javascript) to console "Hello World!" [test]
-//	rcode = v7_exec(rt, "message(\"Initialising JavaScript Runtime Components\n\");", &result);
+    //Send (in javascript) to console "Hello World!" [test]
+    js_dostring(state, "message(\"Initialising JavaScript Runtime Components\n\");");
 
 //    v7_val_t global = v7_get_global(rt);
 
@@ -238,7 +231,7 @@ JSSupport::Result JSSupport::Init() {
 //		return FAIL;
 //	}
 
-//	return OK;
+    return OK;
     //v7_destroy(v7); -- TODO:: AT POWERDOWN
 }
 
