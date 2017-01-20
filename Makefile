@@ -24,9 +24,10 @@ all: release
 
 run: releaserun
 
+# Builds the core 32 bit kernel with a small portion of musl(math), miniz(zlib), oslib(boot), minifb(framebuffer), mujs(js runtime), dlmalloc(alloc et al), libgcc (gcc support) etc etc
 release:
 	$(call check_extract,"\033[0;31mWARNING: Using the builtin compiler is highly recommended, use "make toolchain" first")
-	PREFIX32=$(PREFIX32) PREFIX64=$(PREFIX64) make -C core
+	ARCH=i386 PREFIX32=$(PREFIX32) PREFIX64=$(PREFIX64) make -C core
 	cd rt && zip -r -ll -D ../iso/boot/kmods.zip *
 	genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -A SubraX -o SubraX.iso iso
 

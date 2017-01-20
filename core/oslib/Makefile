@@ -27,7 +27,6 @@ COMMON_OBJS = xinfo.o \
 	losrt.o \
 	xbios.o \
 	time.o \
-	math.o \
 	setjmp.o \
 	assert.o
 

@@ -30,7 +30,6 @@ void operator delete[](void *p, size_t sz);
 #include "module.h"
 
 //Shell / Execution Environment
-#include "v7/v7.h"
 
 //JavaScript Runtime Support Utilities
 #include "jssupport.h"

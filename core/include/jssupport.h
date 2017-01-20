@@ -1,7 +1,7 @@
 #ifndef __JSSUPPORT_H__
 #define __JSSUPPORT_H__
 
-#include "v7/v7.h"
+#include "mujs/mujs.h"
 #include "support.h"
 
 class JSSupport : public Support {

@@ -7,8 +7,9 @@ CP=cp
 GCCDIR=../obj/libgcc/
 OSLDIR=../obj/oslib/
 MINIZDIR=../obj/miniz/
-V7DIR=../obj/v7/
+MDIR=../obj/libm/
 MYDIR=../obj/my/
+MUJSDIR=../obj/mujs/
 
 echo -e "Compiling 32 bit main kernel support using Compiler Prefix: $(PREFIX32)"
 .SUFFIXES: .o .c .cpp .S .asm
@@ -46,18 +47,44 @@ OSLOBJECTS = $(OSLDIR)xinfo.o \
 	$(OSLDIR)mem.o \
 	$(OSLDIR)losrt.o \
 	$(OSLDIR)time.o \
-	$(OSLDIR)math.o \
 	$(OSLDIR)setjmp.o \
 	$(OSLDIR)assert.o
 
 MINIZOBJECTS = $(MINIZDIR)miniz.o 
 
-V7OBJECTS = $(V7DIR)v7.o
+MOBJECTS = $(MDIR)math.o
+
+MUJSOBJECTS = $(MUJSDIR)jsarray.o \
+	$(MUJSDIR)jsboolean.o \
+	$(MUJSDIR)jsbuiltin.o \
+	$(MUJSDIR)jscompile.o \
+	$(MUJSDIR)jsdate.o \
+	$(MUJSDIR)jsdtoa.o \
+	$(MUJSDIR)jsdump.o \
+	$(MUJSDIR)jserror.o \
+	$(MUJSDIR)jsfunction.o \
+	$(MUJSDIR)jsgc.o \
+	$(MUJSDIR)jsintern.o \
+	$(MUJSDIR)jslex.o \
+	$(MUJSDIR)jsmath.o \
+	$(MUJSDIR)jsnumber.o \
+	$(MUJSDIR)jsobject.o \
+	$(MUJSDIR)json.o \
+	$(MUJSDIR)jsparse.o \
+	$(MUJSDIR)jsproperty.o \
+	$(MUJSDIR)jsregexp.o \
+	$(MUJSDIR)jsrun.o \
+	$(MUJSDIR)jsstate.o \
+	$(MUJSDIR)jsstring.o \
+	$(MUJSDIR)jsvalue.o \
+	$(MUJSDIR)regexp.o \
+	$(MUJSDIR)utf.o \
+	$(MUJSDIR)utftype.o
 
 MYOBJECTS = $(MYDIR)my_string.o
 
 OBJECTS = main.o \
-        jssupport.o \
+	jssupport.o \
 	zip.o \
 	module.o \
 	stacksmash.o \
@@ -80,7 +107,7 @@ LD_OPT= $(EXTRAFLAGS) -Bstatic -Tlink.ld -s -nostartfiles -nostdlib
 all: link
 
 link: $(OBJECTS) link.ld
-	$(LD) $(LD_OPT) -o kernel32.sys $(GCCOBJECTS) $(OSLOBJECTS) $(MINIZOBJECTS) $(V7OBJECTS) $(MYOBJECTS) $(OBJECTS)
+	$(LD) $(LD_OPT) -o kernel32.sys $(GCCOBJECTS) $(OSLOBJECTS) $(MINIZOBJECTS) $(MOBJECTS) $(MUJSOBJECTS) $(MYOBJECTS) $(OBJECTS)
 	$(CP) kernel32.sys ../../iso/boot
 
 .s.o: $(AS) $<

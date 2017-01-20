@@ -117,7 +117,7 @@ void getCurrentTime() {
 
 }
 
-struct tm * localtime(time_t t) {
+struct tm * localtime(time_t * t) {
 
     //max 0xffff ffff ffff ffff
 
@@ -136,6 +136,10 @@ struct tm * localtime(time_t t) {
     return &ct;
 }
 
+struct tm * gmtime(time_t * t) {
+    return localtime(t);
+}
+
 time_t time(time_t * sec) {
 
     read_rtc();
@@ -150,5 +154,11 @@ time_t time(time_t * sec) {
     }
 
     return diff;
+
+}
+
+time_t mktime (struct tm * timeptr) {
+
+    return timeptr->tm_sec + (timeptr->tm_min * 60) + (timeptr->tm_hour * 1440/* 24 hours * 60 mins per hour*/) + (timeptr->tm_yday * 525600/*365 days per year * hours*/) + (timeptr->tm_year * 191844000);
 
 }

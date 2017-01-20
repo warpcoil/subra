@@ -52,4 +52,6 @@ typedef int8_t bool;
 #define true 1
 #define false 0
 
+#define offsetof(st, m) ((size_t)&(((st *)0)->m))
+
 #endif
