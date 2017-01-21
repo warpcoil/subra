@@ -13,6 +13,8 @@ static Support * support; //-- Generic Interface, currently only JS
 static Module * module;
 
 void kernel_main(int argc, char * argv[]) {
+    argc=argc;
+    argv=argv;
 
     struct multiboot_info * MultiBootInfo = (multiboot_info *)l1_init();
 
@@ -67,12 +69,10 @@ void kernel_main(int argc, char * argv[]) {
         __asm__ __volatile__ ("hlt");
     }
 
-    uint64_t result;
-
     for (size_t i=0; i<jsFiles->size(); i++) {
         Module::ModuleFile * modFile = jsFiles->at(i);
         message("Executing: %s\n", modFile->Filename.c_str());
-        if (!module->Exec(modFile->ModuleId, modFile->Filename, support, &result)) {
+        if (!module->Exec(modFile->ModuleId, modFile->Filename, support)) {
             message("Error Loading %s, continuing as normal\n", modFile->Filename.c_str());
         }
     }

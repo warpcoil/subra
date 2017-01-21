@@ -48,6 +48,7 @@ OSLOBJECTS = $(OSLDIR)xinfo.o \
 	$(OSLDIR)losrt.o \
 	$(OSLDIR)time.o \
 	$(OSLDIR)setjmp.o \
+	$(OSLDIR)longjmp.o \
 	$(OSLDIR)assert.o
 
 MINIZOBJECTS = $(MINIZDIR)miniz.o 

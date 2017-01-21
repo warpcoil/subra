@@ -1,17 +1,16 @@
 #include "jssupport.h"
 #include "kernel.h"
+#include "oslib/string.h"
 
 #define STD_SIZE	0
 #define SHORT_SIZE	1
 #define LONG_SIZE	2
 
 ////- Calls internal message() function from JavaScript
-static void js_message(js_State * J) {
-
-    size_t l;
+static void js_message(js_State * state) {
 
     //varargs
-    char * format = (char *)js_tostring(J, 1);
+    char * format = (char *)js_tostring(state, 1);
 
     int len = strlen(format);
 
@@ -28,12 +27,12 @@ static void js_message(js_State * J) {
                 break;
             }
             case 'c': { //Char
-                cputc(js_tostring(J, arg)[0]);
+                cputc(js_tostring(state, arg)[0]);
                 arg++;
                 break;
             }
             case 's': { //String
-                message("%s", js_tostring(J, arg));
+                message("%s", js_tostring(state, arg));
                 arg++;
                 break;
             }
@@ -78,7 +77,7 @@ static void js_message(js_State * J) {
                     j++;
                 }
 
-                message(formatArgs, js_tointeger(J, arg));
+                message(formatArgs, js_tointeger(state, arg));
 
                 i += j;
 
@@ -96,99 +95,158 @@ static void js_message(js_State * J) {
         }
     }
 
-    js_pushnumber(J, (double)l);
+    js_pushundefined(state);
 
 }
 
-////Structure translation
-////Types supported [u]byte, [u]word, [u]doubleword and [u]quadword
-//static v7_err js_sizeof(struct v7 * rt, v7_val_t * res) {
+static void js_malloc(js_State * state) {
 
-//    v7_val_t object = v7_arg(rt, 0);
+    int32_t amt = js_toint32(state, 1);
+    uint32_t where = (uint32_t)dlmalloc((size_t)amt);
+    js_pushnumber(state, (double)where);
 
-//    if (!v7_is_object(object)) {
-//       message("Malformed Structure Descriptor\n");
-//       return V7_EXEC_EXCEPTION;
+}
+
+static void js_free(js_State * state) {
+
+    uint32_t addr = js_touint32(state, 1);
+    dlfree((void *)addr);
+    js_pushundefined(state);
+
+}
+
+static void js_realloc(js_State * state) {
+
+    uint32_t addr = js_touint32(state, 1);
+    int32_t newSize = js_toint32(state, 2);
+    uint32_t where = (uint32_t)dlrealloc((void *)addr, (size_t)newSize);
+    js_pushnumber(state, (double)where);
+
+}
+
+static void js_writeInt8_t(js_State * state) {
+
+    uint32_t where = js_touint32(state, 1);
+    int8_t * w = (int8_t *)where;
+    * w = (int8_t)js_toint32(state, 2);
+    js_pushundefined(state);
+
+}
+
+static void js_writeInt16_t(js_State *state) {
+
+    uint32_t where = js_touint32(state, 1);
+    int16_t * w = (int16_t *)where;
+    * w = (int16_t)js_toint32(state, 2);
+    js_pushundefined(state);
+
+}
+
+static void js_writeInt32_t(js_State *state) {
+
+    uint32_t where = js_touint32(state, 1);
+    int32_t * w = (int32_t *)where;
+    * w = (int32_t)js_toint32(state, 2);
+    js_pushundefined(state);
+
+}
+
+static void js_writeUint8_t(js_State * state) {
+
+    uint32_t where = js_touint32(state, 1);
+    uint8_t * w = (uint8_t *)where;
+    * w = (uint8_t)js_toint32(state, 2);
+    js_pushundefined(state);
+
+}
+
+static void js_writeUint16_t(js_State *state) {
+
+    uint32_t where = js_touint32(state, 1);
+    uint16_t * w = (uint16_t *)where;
+    * w = (uint16_t)js_toint32(state, 2);
+    js_pushundefined(state);
+
+}
+
+static void js_writeUint32_t(js_State *state) {
+
+    uint32_t where = js_touint32(state, 1);
+    uint32_t * w = (uint32_t *)where;
+    * w = (uint32_t)js_toint32(state, 2);
+    js_pushundefined(state);
+
+}
+
+static void js_readInt8_t(js_State * state) {
+
+    uint32_t where = js_touint32(state, 1);
+    int8_t * w = (int8_t *)where;
+    js_pushnumber(state, (double) * w);
+
+}
+
+static void js_readInt16_t(js_State *state) {
+
+    uint32_t where = js_touint32(state, 1);
+    int16_t * w = (int16_t *)where;
+    js_pushnumber(state, (double) * w);
+
+}
+
+static void js_readInt32_t(js_State *state) {
+
+    uint32_t where = js_touint32(state, 1);
+    int32_t * w = (int32_t *)where;
+    js_pushnumber(state, (double) * w);
+
+}
+
+static void js_readUint8_t(js_State * state) {
+
+    uint32_t where = js_touint32(state, 1);
+    uint8_t * w = (uint8_t *)where;
+    js_pushnumber(state, (double) * w);
+
+}
+
+static void js_readUint16_t(js_State *state) {
+
+    uint32_t where = js_touint32(state, 1);
+    uint16_t * w = (uint16_t *)where;
+    js_pushnumber(state, (double) * w);
+
+}
+
+static void js_readUint32_t(js_State *state) {
+
+    uint32_t where = js_touint32(state, 1);
+    uint32_t * w = (uint32_t *)where;
+    js_pushnumber(state, (double) * w);
+
+}
+
+//    js_getindex(state, 1, 0);
+//    if(!js_hasproperty(state, -1, "name")) {
+//        message("Unknown Descriptor\n");
 //    }
+//    const char * name = js_tostring(state, -1);
+//    //js_pop(state, -1);
 
-//    v7_val_t t = v7_get(rt, object, "0", NULL);
-
-//    if (v7_is_undefined(t)) {
-//                message("Undefined Object\n");
+//    js_getindex(state, 1, 0);
+//    if(!js_hasproperty(state, -1, "type")) {
+//        message("Unknown Descriptor\n");
 //    }
+//    int type = js_toint32(state, -1);
+//    //js_pop(state, -1);
 
-//    if (!v7_is_object(t)) {
-//        message("Not An Array\n");
-//        return V7_EXEC_EXCEPTION;
+//    js_getindex(state, 1, 0);
+//    if(!js_hasproperty(state, -1, "amount")) {
+//        message("Unknown Descriptor\n");
 //    }
+//    int amount = js_toint32(state, -1);
+//    //js_pop(state, -1);
 
-//    t = v7_get(rt, t, "VBEVesaInfo[0][name]", NULL);
-
-//    if (v7_is_undefined(t)) {
-//                message("nUndefined Object\n");
-//    }
-
-//    if (!v7_is_array(rt, t)) {
-//        message("Not An Array\n");
-//        return V7_EXEC_EXCEPTION;
-//    }
-
-//    //Get array length
-//    //unsigned long len = v7_array_length(rt, arr);
-
-//    //message("lenarr: %i\n", len);
-
-////    unsigned long structLength = 0;
-////    v7_val_t member;
-////    v7_val_t object;
-////    int type;
-
-////    size_t temp;
-
-////    for (unsigned long i=0; i<3; i++) {
-////        //Each object in array has member type, length and name to bind to
-////        member = v7_array_get(rt, arr, i);
-
-////        if (v7_is_object(arr)) {
-////            message("Undefined Object\n");
-////        }
-
-////        object = v7_get(rt, member, "name", NULL);
-
-////        if (v7_is_undefined(object))
-////            message("errrr");
-
-////        char * s = (char *)v7_get_string(rt, &object, &temp);
-////        //type = fixint(v7_get_int(rt, object));
-////        //type = v7_get_int(rt, object);
-
-////        message("type: %s\n", s);
-
-//////        switch (type) {
-//////        //TODO:: Fix Negative Numbers
-//////            case -1:
-//////                //message("int int8_t");
-//////            break;
-//////        default:
-//////            message("Unknown Base Type %i\n", type);
-//////        }
-////    }
-
-//    //v7_val_t el0 = v7_array_get(rt, )
-//    * res = v7_mk_number(rt, 22);
-
-//    return V7_OK;
-//}
-
-////Structure serialisation -- from js object descriptor, create a structure and serialise at addr
-//static v7_err js_serialise(struct v7 *rt, v7_val_t * res) {
-
-//}
-
-////Structure deserialisation -- from __attribute__packed typedef, to js object, based on js object descriptor
-//static v7_err js_deserialise(struct v7 *rt, v7_val_t * res) {
-
-//}
 
 ////Emulated interrupt -- uses vm6 task, to register an interrupt
 //static v7_err js_emulated_int(struct v7 *rt, v7_val_t *res) {
@@ -203,22 +261,74 @@ JSSupport::Result JSSupport::Init() {
     if (state == NULL)
         state = js_newstate(NULL, NULL, JS_STRICT); //ES5 strict
 
+    //Legacy mode message/printf [VGA]
     js_newcfunction(state, js_message, "message", MAXARGS);
     js_setglobal(state, "message");
+
     js_newcfunction(state, js_message, "printf", MAXARGS);
     js_setglobal(state, "printf");
 
-    //Send (in javascript) to console "Hello World!" [test]
-    js_dostring(state, "message(\"Initialising JavaScript Runtime Components\n\");");
+    //malloc, free and realloc et al
+    js_newcfunction(state, js_malloc, "malloc", 1);
+    js_setglobal(state, "malloc");
 
-//    v7_val_t global = v7_get_global(rt);
+    js_newcfunction(state, js_free, "free", 1);
+    js_setglobal(state, "free");
 
-//    //sizeof(struct descriptor)
-//    v7_set_method(rt, global, "sizeof", &js_sizeof);
+    js_newcfunction(state, js_realloc, "realloc", 2);
+    js_setglobal(state, "realloc");
+
+    //mem writes and reads from js
+    js_newcfunction(state, js_writeInt8_t, "writeInt8_t", 2);
+    js_setglobal(state, "writeInt8_t");
+
+    js_newcfunction(state, js_writeInt16_t, "writeInt16_t", 2);
+    js_setglobal(state, "writeInt16_t");
+
+    js_newcfunction(state, js_writeInt32_t, "writeInt32_t", 2);
+    js_setglobal(state, "writeInt32_t");
+
+    js_newcfunction(state, js_writeUint8_t, "writeUint8_t", 2);
+    js_setglobal(state, "writeUint8_t");
+
+    js_newcfunction(state, js_writeUint16_t, "writeUint16_t", 2);
+    js_setglobal(state, "writeUint16_t");
+
+    js_newcfunction(state, js_writeUint32_t, "writeUint32_t", 2);
+    js_setglobal(state, "writeUint32_t");
+
+    js_newcfunction(state, js_readInt8_t, "readInt8_t", 1);
+    js_setglobal(state, "readInt8_t");
+
+    js_newcfunction(state, js_readInt16_t, "readInt16_t", 1);
+    js_setglobal(state, "readInt16_t");
+
+    js_newcfunction(state, js_readInt32_t, "readInt32_t", 1);
+    js_setglobal(state, "readInt32_t");
+
+    js_newcfunction(state, js_readUint8_t, "readUint8_t", 1);
+    js_setglobal(state, "readUint8_t");
+
+    js_newcfunction(state, js_readUint16_t, "readUint16_t", 1);
+    js_setglobal(state, "readUint16_t");
+
+    js_newcfunction(state, js_readUint32_t, "readUint32_t", 1);
+    js_setglobal(state, "readUint32_t");
+
+    //Send (in javascript) to console "Javascript Runtime Message!" [test] Note:  You cannot embed \n
+    js_dostring(state, "message('Initialising JavaScript Runtime Components' + String.fromCharCode(10));");
+
+    //sizeof(struct descriptor)
+//    js_newcfunction(state, js_sizeof, "sizeof", 1);
+//    js_setglobal(state, "sizeof");
+
 //    //serialise(js struct to packed type)
-//    v7_set_method(rt, global, "serialise", &js_serialise);
+//    js_newcfunction(state, js_serialise, "serialise", 2);
+//    js_setglobal(state, "serialise");
+
 //    //deserialise(packed type to js struct)
-//    v7_set_method(rt, global, "deserialise", &js_deserialise);
+//    js_newcfunction(state, js_deserialise, "deserialise", 2);
+//    js_setglobal(state, "deserialise");
 //    //perform interrupt under emulation
 //    v7_set_method(rt, global, "emulatedInt", &js_emulated_int);
 
@@ -235,21 +345,13 @@ JSSupport::Result JSSupport::Init() {
     //v7_destroy(v7); -- TODO:: AT POWERDOWN
 }
 
-JSSupport::Result JSSupport::Exec(char * jsCode, uint64_t * result) {
+JSSupport::Result JSSupport::Exec(char * jsCode) {
 
-//    //Execute the UTF8/ASCII code within built in engine
-//    //Check for success
-//    enum v7_err rcode = V7_OK;
+    //Execute the UTF8/ASCII code within built in engine
 
-//    rcode = v7_exec(rt, jsCode, result);
+    js_dostring(state, jsCode);
 
-//    if (rcode != V7_OK) {
-//        //Log error
-//        message("Support::JSExec: %s\n", v7_get_parser_error(rt));
-//        return FAIL;
-//    }
-
-//    return OK;
+    return OK;
 }
 
 

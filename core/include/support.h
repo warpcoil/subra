@@ -10,7 +10,7 @@ public:
     };
 
     virtual Result Init();
-    virtual Result Exec(char * jsCode, uint64_t * result);
+    virtual Result Exec(char * jsCode);
 };
 
 #endif // SUPPORT_H

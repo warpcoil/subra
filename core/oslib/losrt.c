@@ -524,9 +524,21 @@ int fflush(FILE *stream) {
 }
 
 int fputc(int c, FILE *stream) {
-    message("STUB: fput stream");
-    stream=stream;
-    cputc(c);
+
+    //If stream out
+    //If stream err
+    //Output to console
+    if (strcmp("::out", stream->filename) == 0)
+        cputc((char)c);
+    else if (strcmp("::err", stream->filename) == 0)
+        cputc((char)c);
+    else {
+        message("fputc only supported on std::out and std::err\n");
+    }
+
+    //There are no file apis in the kernel, they are all in JavaScript
+    //In fact there isn't much in the kernel, it's all in the zipped module[s].
+
     return c;
 }
 
@@ -557,17 +569,15 @@ static char cbuf[500];
 
 int fprintf(FILE * stream, const char *fmt, ...) {
 
-    cputs(stream->filename);
-    cputs(" - STUB");
-
     va_list parms;
     int result;
 
     va_start(parms,fmt);
     result = vksprintf(cbuf,fmt,parms);
     va_end(parms);
-    cputs(cbuf);
+    fputs(cbuf, stream);
     return(result);
+
 }
 
 int vfprintf ( FILE * stream, const char *fmt, va_list ap) {

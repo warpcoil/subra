@@ -28,7 +28,7 @@ public:
 	bool Initialise(struct multiboot_info * MultiBootInfo);
     bool ListFilesOfType(my::String extension, warp::Vector<ModuleFile> * vec);
     char * Open(int moduleId, my::String filename);
-    bool Exec(int moduleId, my::String filename, Support * runtime, uint64_t *result);
+    bool Exec(int moduleId, my::String filename, Support * runtime);
     void Close(unsigned char * data);
 };
 

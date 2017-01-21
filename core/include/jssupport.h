@@ -14,7 +14,7 @@ private:
     js_State * state = NULL;
 public:
     Result Init();
-    Result Exec(char * jsCode, uint64_t * result);
+    Result Exec(char * jsCode);
 };
 
 

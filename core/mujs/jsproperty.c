@@ -109,16 +109,16 @@ static void freeproperty(js_State *J, js_Object *obj, js_Property *node)
 	--obj->count;
 }
 
-static js_Property *delete(js_State *J, js_Object *obj, js_Property *node, const char *name)
+static js_Property *del(js_State *J, js_Object *obj, js_Property *node, const char *name)
 {
 	js_Property *temp, *succ;
 
 	if (node != &sentinel) {
 		int c = strcmp(name, node->name);
 		if (c < 0) {
-			node->left = delete(J, obj, node->left, name);
+            node->left = del(J, obj, node->left, name);
 		} else if (c > 0) {
-			node->right = delete(J, obj, node->right, name);
+            node->right = del(J, obj, node->right, name);
 		} else {
 			if (node->left == &sentinel) {
 				temp = node;
@@ -135,7 +135,7 @@ static js_Property *delete(js_State *J, js_Object *obj, js_Property *node, const
 				node->name = succ->name;
 				node->atts = succ->atts;
 				node->value = succ->value;
-				node->right = delete(J, obj, node->right, succ->name);
+                node->right = del(J, obj, node->right, succ->name);
 			}
 		}
 
@@ -223,7 +223,7 @@ js_Property *jsV_setproperty(js_State *J, js_Object *obj, const char *name)
 
 void jsV_delproperty(js_State *J, js_Object *obj, const char *name)
 {
-	obj->properties = delete(J, obj, obj->properties, name);
+    obj->properties = del(J, obj, obj->properties, name);
 }
 
 /* Flatten hierarchy of enumerable properties into an iterator object */

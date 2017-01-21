@@ -757,6 +757,7 @@ core/oslib/idtinit.c
 core/oslib/irq.c
 core/oslib/irq.c
 core/oslib/irq.c
+core/oslib/longjmp.s
 core/oslib/losrt.c
 core/oslib/losrt.c
 core/oslib/losrt.c
@@ -765,7 +766,8 @@ core/oslib/math.c
 core/oslib/mem.s
 core/oslib/setjmp.c
 core/oslib/setjmp.c
-core/oslib/setjmp.c
+core/oslib/setjmp.old
+core/oslib/setjmp.s
 core/oslib/time.c
 core/oslib/time.c
 core/oslib/time.c

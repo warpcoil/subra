@@ -185,14 +185,14 @@ char * Module::Open(int moduleId, my::String filename) {
     return NULL;
 }
 
-bool Module::Exec(int moduleId, my::String filename, Support * runtime, uint64_t * result) {
+bool Module::Exec(int moduleId, my::String filename, Support * runtime) {
 
     char * exec = Open(moduleId, filename);
 
     if (exec == NULL)
         return false; //Unable to open file
 
-    if (runtime->Exec(exec, result) != Support::OK) {
+    if (runtime->Exec(exec) != Support::OK) {
         return false;
     }
 
