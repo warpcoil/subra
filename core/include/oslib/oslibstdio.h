@@ -26,6 +26,7 @@
 BEGIN_DEF
 
 #include "stdarg.h"
+#include "error.h"
 
 //Should work with FILE * ptr
 
@@ -41,20 +42,34 @@ extern FILE * stdout;
 extern FILE * stderr;
 
 int fflush(FILE * stream);
-int fprintf(FILE * file, const char *fmt, ...) __attribute__((__format__(printf,2,3)));
+int fprintf(FILE * stream, const char *fmt, ...) __attribute__((__format__(printf,2,3)));
 int fwrite(const void * ptr, size_t size, size_t count, FILE * stream);
 int fputc(int c, FILE * stream);
+int fputs(const char * s, FILE * stream);
+int vfprintf ( FILE * stream, const char *fmt, va_list ap);
 
 //int vsprintf(char *buf,char *fmt, va_list parms);
 int vsnprintf (char *buf, size_t n, const char *fmt, va_list parms);
 int vksprintf(char *buf,const char *fmt,va_list parms);
-//int sprintf(char *buf,char *fmt,...) __attribute__((__format__(printf,2,3)));
+int sprintf(char *buf,const char *fmt,...) __attribute__((__format__(printf,2,3)));
 int snprintf(char * buf, size_t n, const char *fmt, ...) __attribute__((__format__(printf,3,4)));
 int ksprintf(char *buf,char *fmt,...) __attribute__((__format__(printf,2,3)));
 int vsscanf(char *buf,char *fmt,va_list parms);
 int sscanf(char *buf,char *fmt,...) __attribute__((__format__(scanf,2,3)));
 
+int putchar (int c);
+
+#define printf message
+
 int ll_printf(char *fmt,...);
+
+//In main area of kernel
+extern int errno;
+#define ERANGE 255 /* Result too large */
+
+#define RAND_MAX 32767
+int rand(void);
+void srand(unsigned int seed);
 
 END_DEF
 #endif

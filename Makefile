@@ -24,29 +24,34 @@ all: release
 
 run: releaserun
 
+# Builds the core 32 bit kernel with a small portion of musl(math), miniz(zlib), oslib(boot), minifb(framebuffer), mujs(js runtime), dlmalloc(alloc et al), libgcc (gcc support) etc etc
 release:
 	$(call check_extract,"\033[0;31mWARNING: Using the builtin compiler is highly recommended, use "make toolchain" first")
-	PREFIX32=$(PREFIX32) PREFIX64=$(PREFIX64) make -C core
+	ARCH=i386 PREFIX32=$(PREFIX32) PREFIX64=$(PREFIX64) make -C core
+	cd rt && zip -r -ll -D ../iso/boot/kmods.zip *
 	genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -A SubraX -o SubraX.iso iso
 
-debug:
-	$(call check_extract,"\033[0;31mWARNING: Using the builtin compiler is highly recommended, use "make toolchain" first")
-	PREFIX32=$(PREFIX32) PREFIX64=$(PREFIX64) EXTRAFLAGS="-g" make -C core
-	$(PREFIX32)objcopy --only-keep-debug $(abspath iso/boot/kernel32.sys) $(abspath kernel32.sym)
-	genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -A SubraX -o SubraX.iso iso
+#debug:
+#	$(call check_extract,"\033[0;31mWARNING: Using the builtin compiler is highly recommended, use "make toolchain" first")
+#	PREFIX32=$(PREFIX32) PREFIX64=$(PREFIX64) EXTRAFLAGS="-g" make -C core
+#	$(PREFIX32)objcopy --only-keep-debug $(abspath iso/boot/kernel32.sys) $(abspath kernel32.sym)
+#	genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -A SubraX -o SubraX.iso iso
 
 clean:
 	find core/ -name "*.o" -delete
 	find core/ -name "*.sys" -delete
 
 releaserun:
+ifeq ($(OS),Windows_NT)
+	qemu-system-i386 -m size=128 -cdrom SubraX.iso -boot d -L C:\\compiler\\home\\core\\subra\\internal\\Bios
+else
 	$(call check_extract,"\033[0;31mWARNING: Using the builtin emulator is highly recommended, use "make toolchain" first")
 	qemu-system-i386 -m size=128 -cdrom SubraX.iso -boot d -sdl
-	#$(GENERIC)/qemu-system-i386 -m size=128 -cdrom SubraX.iso -boot d -sdl -s -S
+endif
 
-debugrun:
-	$(call check_extract,"\033[0;31mWARNING: Using the builtin debugger is highly recommended, use "make toolchain" first")
-	$(GENERIC)/qemu-system-i386 -m size=128 -cdrom SubraX.iso -boot d -sdl -s -S & i386-elf-gdb --symbols=$(abspath kernel.sym) --eval-command="target remote localhost:1234"
+# debugrun:
+#	$(call check_extract,"\033[0;31mWARNING: Using the builtin debugger is highly recommended, use "make toolchain" first")
+#	$(GENERIC)/qemu-system-i386 -m size=128 -cdrom SubraX.iso -boot d -sdl -s -S & i386-elf-gdb --symbols=$(abspath kernel.sym) --eval-command="target remote localhost:1234"
 
 getarchive:
 	make -C tools/toolbuilder getarchive

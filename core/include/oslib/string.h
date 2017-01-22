@@ -43,12 +43,15 @@ int strncmp(const char *s1,const char *s2,int n);
 int strlen(const char *s);
 char *strscn(const char *s,char *pattern);
 char *strchr(const char *s,int c);
+char *strrchr (const char *s, int c);
 char *strupr(char *s);
 char *strlwr(char *s);
-char *strcat(char *dst,char *src);
+char *strcat(char *dst, const char *src);
 long unsigned strtoul(const char *s, char **scan_end, int base);
-long strtol (const char* s, char** scan_end, int base);
-//char * strdup(const char *s);
+long strtol(const char* s, char** scan_end, int base);
+char *strstr (const char * s, const char * e);
+
+int atoi(const char * s);
 
 //ctype
 int tolower(int c);

@@ -1,6 +1,0 @@
-default 0
-timeout 0
-
-title SubraX
-kernel /boot/kernel32.sys
-module /boot/sx.sxr

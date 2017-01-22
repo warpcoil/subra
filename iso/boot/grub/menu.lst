@@ -5,4 +5,4 @@ title SubraX
 #For qemu we can use autodetection, but if it's available the highest mode is selected, for some reason I get a massive 2000xsomethingx32bit (and it works!)
 #This is larger than my screen, so we'll override by setting the driver to vesalfb and mode to 280 (base 10)
 kernel /boot/kernel32.sys gfx=vesalfb vesalfb=280
-module /boot/sx.sxr
+module /boot/kmods.zip

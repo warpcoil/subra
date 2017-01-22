@@ -325,6 +325,16 @@ int ksprintf(char *buf,char *fmt,...)
     return(result);
 }
 
+int sprintf(char *buf,const char *fmt, ...) {
+    va_list parms;
+    int result;
+
+    va_start(parms,fmt);
+    result = vksprintf(buf,fmt,parms);
+    va_end(parms);
+    return(result);
+}
+
 int snprintf(char * buf, size_t n, const char *fmt, ...) {
     va_list parms;
     int result;
@@ -418,6 +428,21 @@ char *strchr(const char *s,int c) {
 
 }
 
+char *strrchr (const char *s, int c) {
+
+    int len = strlen(s);
+    char * sc = (char *)s;
+
+    for (int i=(len - 1); i>=0; i--) {
+        if (s[i] == (char)c) {
+            return sc + i;
+        }
+    }
+
+    return NULL;
+
+}
+
 char *strupr(char *s) {
     int len = strlen(s);
 
@@ -440,6 +465,18 @@ char *strlwr(char *s) {
     }
 
     return s;
+}
+
+char *strcat(char *dst, const char *src) {
+
+    int lenSrc = strlen(src);
+    int lenDest = strlen(dst);
+
+    for (int i=0; i<lenSrc; i++) {
+        dst[lenDest + i] = src[i];
+    }
+
+    return dst;
 }
 
 int strcmp(const char *s1,const char *s2) {
@@ -465,6 +502,21 @@ int strncmp(const char *s1,const char *s2,int n) {
     return 0;
 }
 
+char *strstr (const char * s, const char * e) {
+
+    int len_s = strlen(s);
+    int len_e = strlen(e);
+
+    char * l = (char *)s;
+
+    for (int i=0; i<(len_s - len_e); i++) {
+        if (strncmp(l + i, e, len_e) == 0)
+            return l + i;
+    }
+
+    return NULL;
+}
+
 int fflush(FILE *stream) {
     stream=stream;
     //No flush -- internal use flush, is direct
@@ -472,9 +524,36 @@ int fflush(FILE *stream) {
 }
 
 int fputc(int c, FILE *stream) {
-    stream=stream;
-    cputc(c);
+
+    //If stream out
+    //If stream err
+    //Output to console
+    if (strcmp("::out", stream->filename) == 0)
+        cputc((char)c);
+    else if (strcmp("::err", stream->filename) == 0)
+        cputc((char)c);
+    else {
+        message("fputc only supported on std::out and std::err\n");
+    }
+
+    //There are no file apis in the kernel, they are all in JavaScript
+    //In fact there isn't much in the kernel, it's all in the zipped module[s].
+
     return c;
+}
+
+int fputs(const char *s, FILE *stream) {
+
+    char * b = (char *)s;
+
+    while (* s != 0)
+    {
+        fputc((int)* s, stream);
+        s++;
+    }
+
+    return (int)(s - b);
+
 }
 
 int fwrite(const void * ptr, size_t size, size_t count, FILE * stream) {
@@ -486,20 +565,40 @@ int fwrite(const void * ptr, size_t size, size_t count, FILE * stream) {
     return size;
 }
 
-int fprintf(FILE *file, const char *fmt, ...) {
+static char cbuf[500];
 
-    cputs(file->filename);
-    cputs(" - ");
+int fprintf(FILE * stream, const char *fmt, ...) {
 
-    static char cbuf[500];
     va_list parms;
     int result;
 
     va_start(parms,fmt);
     result = vksprintf(cbuf,fmt,parms);
     va_end(parms);
-    cputs(cbuf);
+    fputs(cbuf, stream);
     return(result);
+
+}
+
+int vfprintf ( FILE * stream, const char *fmt, va_list ap) {
+
+    cputs(stream->filename);
+    cputs(" - STUB");
+
+    int result;
+
+    result = vksprintf(cbuf, fmt, ap);
+    cputs(cbuf);
+    return result;
+}
+
+int atoi (const char * s) {
+
+    while (isspace(* s))
+        s++;
+
+    return (int)strtol(s, NULL, 10);
+
 }
 
 //char * strdup(const char *s)
@@ -714,6 +813,10 @@ void cputc(char c)
     place(x,y);
 }
 
+int putchar(int c) {
+    cputc((char)c);
+    return c;
+}
 
 void cputs(char *s)
 {
@@ -722,4 +825,17 @@ void cputs(char *s)
         c = *s++;
         cputc(c);
     }
+}
+
+static unsigned long int next = 1;
+
+int rand(void) // RAND_MAX assumed to be 32767
+{
+    next = next * 1103515245 + 12345;
+    return (unsigned int)(next / 65536) % 32768;
+}
+
+void srand(unsigned int seed)
+{
+    next = seed;
 }

@@ -31,7 +31,7 @@ public:
     //Warning no constructor that takes nElements to reserve as argument, it if fully dynamic
     Vector() { //Default constructor
 
-        elements = 0;
+        elements = new Element; //null terminator
         nElements = 0;
 
     }
@@ -63,30 +63,36 @@ public:
 
     T * operator [] (size_t elementId) const { //Read, identical to at() -- non conformant
 
+        return at(elementId);
+
+    }
+
+    T * at (size_t elementId) { //alias for [], both behave identically or NULL if not found
+
         if (elementId > (size() - 1))
         {
-            message("Vector only has %i elements: Overflow");
+            message("Vector only has %i elements: Overflow", (int)size());
             halt();
         }
 
-        size_t e = 0;
+        if (elementId == 0)
+            return elements->el;
 
-        while (elements->next != NULL) {
+        size_t e = 0;
+        Element * el = elements;
+
+        while (el->next != NULL) {
             if (e == elementId) {
-                return elements->el;
+                return el->el;
             }
+            el = el->next;
             e++;
         }
 
-        message("Overflow has occurred in a place where it cannot occur");
+        message("Overflow has occurred in a place where it cannot occur with id: %lui", elementId);
         halt();
 
         return NULL;
-
-    }
-    T * at (size_t elementId) { //alias for [], both behave identically or NULL if not found
-
-        return this[elementId];
 
     }
 

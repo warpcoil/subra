@@ -23,12 +23,16 @@ void operator delete[](void *p);
 void operator delete(void *p, size_t sz);
 void operator delete[](void *p, size_t sz);
 
+//Zip File Processing [i.e. modules]
+//#include "zip.h"
+
+//Module Loading [multiboot spec]
+#include "module.h"
 
 //Shell / Execution Environment
-#include "v7/v7.h"
 
 //JavaScript Runtime Support Utilities
-#include "support.h"
+#include "jssupport.h"
 
 //Command line processing strict key=value format
 //#include "commandline.h"

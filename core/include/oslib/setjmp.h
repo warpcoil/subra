@@ -3,10 +3,17 @@
 
 #include "oslib/hw-data.h"
 
-typedef struct _jmp_buf { unsigned char _jb[109]; } jmp_buf[1];
+//Ported from musl
+typedef unsigned long __jmp_buf[6];
 
-int setjmp(jmp_buf __jmpb);
-void longjmp(jmp_buf __jmpb, int __ret);
+typedef struct __jmp_buf_tag {
+    __jmp_buf __jb;
+    unsigned long __fl;
+    unsigned long __ss[128/sizeof(long)];
+} jmp_buf[1];
+
+int setjmp (jmp_buf);
+__attribute__((__noreturn__)) void longjmp (jmp_buf, int);
 
 #endif // SETJMP
 

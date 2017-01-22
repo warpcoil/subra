@@ -29,8 +29,10 @@ tm_yday	int	days since January 1	0-365
 tm_isdst	int	Daylight Saving Time flag
 */
 
-struct tm * localtime(time_t t);
+struct tm * localtime(time_t * t);
+struct tm * gmtime(time_t * t);
 time_t time(time_t * sec);
+time_t mktime (struct tm * timeptr);
 
 #endif // TIME
 
