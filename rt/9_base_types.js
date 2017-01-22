@@ -1,19 +1,45 @@
 //This is executed first
 
+
+
 //When you describe a struct in JavaScript, we need to know the type
 
-var uint8_t = 1;
-var uint16_t = 2;
-var uint32_t = 4;
-var int8_t = -1;
-var int16_t = -2;
-var int32_t = -4;
+var baseTypes = {
+    uint8_t: 1,
+    uint16_t: 2,
+    uint32_t: 4,
+    int8_t: -1,
+    int16_t: -2,
+    int32_t: -4
+};
+
+var vm86Registers = {
+    ax: 97120,
+    bx: 98120,
+    cx: 99120,
+    dx: 100120,
+    si: 115105,
+    di: 100105,
+    cf: 99102,
+    al: 97108,
+    ah: 97104,
+    bl: 98108,
+    bh: 98104,
+    cl: 99108,
+    ch: 99104,
+    dl: 100108,
+    dh: 100104,
+    es: 101115,
+    cs: 99115,
+    ss: 115115,
+    ds: 100115
+}
 
 /* For example
 
 var myStruct = [
-            { type: int8_t, amount: 1, name: "myIndex" },
-            { type: int8_t, amount: 127, name: "myString" }
+            { type: baseTypes.int8_t, amount: 1, name: "myIndex" },
+            { type: baseTypes.int8_t, amount: 127, name: "myString" }
         ];
 
 This tells us, we would like a structure with a small index value, and a fixed length string (not pointer) of 127 chars
@@ -203,6 +229,7 @@ function serialise(descriptor, data) {
     
     return data.where;
 }
+var serialize = serialise; //Prefer English though
 
 function deserialise(descriptor, where, amount) {
 
@@ -271,6 +298,7 @@ function deserialise(descriptor, where, amount) {
 
     return data;
 }
+var deserialize = deserialise;
 
 function arrayToString(array) {
     return String.fromCharCode.apply(null, array)

@@ -16,6 +16,7 @@ void kernel_main(int argc, char * argv[]) {
     argc=argc;
     argv=argv;
 
+    DWORD stackPtr = get_SP();
     struct multiboot_info * MultiBootInfo = (multiboot_info *)l1_init();
 
     if (MultiBootInfo == NULL)

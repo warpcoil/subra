@@ -336,7 +336,7 @@ int vm86_callBIOS(int service,X_REGS16 *in,X_REGS16 *out,X_SREGS16 *s)
       out->x.cflag = (WORD)vm86_TSS.t.eflags;
 */
 #ifdef __LL_DEBUG__
-#error Fix the following: use global_regs->xxx ???
+#error Fix the following: use global_regs->xxx
 	message("%x\n", (WORD)*(GLOBesp));
 	message("%x\n", (WORD)*(GLOBesp+1)); /*EDI*/
 	message("%x\n", (WORD)*(GLOBesp+2)); /*ESI*/
