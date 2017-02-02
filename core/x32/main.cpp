@@ -1,22 +1,28 @@
 #include "kernel.h"
-
 #include "oslib/oslibstdio.h"
 
+//16 bit objects
+#include "x16/int16.h"
+
 extern "C" void kernel_main(int argc, char * argv[]);
+extern "C" void emulate_int(uint32_t intnum, struct registers r);
 
 FILE * stdin;
 FILE * stdout;
 FILE * stderr;
 
 //static GUIPrimitive * gfxDriver;
+static GDT * gdt;
+static IDT * idt;
 static Support * support; //-- Generic Interface, currently only JS
 static Module * module;
+static RealMode * realMode;
 
 void kernel_main(int argc, char * argv[]) {
     argc=argc;
     argv=argv;
 
-    DWORD stackPtr = get_SP();
+    //DWORD stackPtr = get_SP();
     struct multiboot_info * MultiBootInfo = (multiboot_info *)l1_init();
 
     if (MultiBootInfo == NULL)
@@ -26,6 +32,49 @@ void kernel_main(int argc, char * argv[]) {
     }
 
     ll_context_save();
+
+    //Copy embedded 16 bit code to org 0x600
+    uint32_t begin = (uint32_t)&int16_o[0];
+    uint32_t size = (uint32_t)int16_o_size;
+
+    message("beg %u sz %u\n", begin, size);
+
+    //Enable 16 bit mode
+    //RealMode real;
+    //realMode = &real;
+
+    //Set our own GDT, don't use oslib, we need to extend later
+    GDT globalDescriptor;
+    gdt = &globalDescriptor;
+    gdt->Initialise();
+
+    //Set our own IDT, we can create services and handle them as necessary
+    IDT interruptDescriptor;
+    idt = &interruptDescriptor;
+    idt->StopInterrupts();
+    idt->Initialise();
+    idt->StartInterrupts();
+
+    //X_REGS16 ri;
+    //X_REGS16 ro;
+    //X_SREGS16 rs;
+
+    //regs_in = &ri;
+    //regs_out = &ro;
+    //regs_segments = &rs;
+
+    //vm86_init();
+    //l1_int_bind(0x6d, (void *)emulate_int);
+
+    //Get video mode
+    //regs_in->x.ax = 0x4f00;
+    //regs_in->x.di=0;
+    //regs_segments->ds=0x3a;
+    //regs_segments->es=0x3a;
+
+    //vm86_call(0x6d, 0x10);
+
+    //vm86_callBIOS(0x10, regs_in, regs_out, regs_segments);
 
 /*** Region -- Modules Initialisation (zip files) ***/
     //Load modules -- contains kernel runtime encoded as JavaScript
@@ -78,6 +127,7 @@ void kernel_main(int argc, char * argv[]) {
         }
     }
 
+    for(;;);
 /*** End Region -- Physical Module Loading ***/
 
     //Register the command line [if any]

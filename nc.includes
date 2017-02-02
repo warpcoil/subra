@@ -86,3 +86,7 @@ core/include/musl_core
 core/musl_core
 core/include/libm_core
 core/libm_core
+core/include/napalm
+core/napalm
+core/x16
+core/include/x16

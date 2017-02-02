@@ -69,19 +69,19 @@ var VBEModeInfo = [
 ];
 
 //Get video mode
-vm86_set_register_value(vm86Registers.ax, 0x4f00);
-vm86_set_register_value(vm86Registers.di, 0);
-vm86_set_register_value(vm86Registers.ds, 0x3a);
-vm86_set_register_value(vm86Registers.es, 0x3a);
-vm86_call_bios(0x6d, 0x10);
+real_set_register_value(vm86Registers.ax, 0x4f00);
+real_set_register_value(vm86Registers.di, 0);
+real_set_register_value(vm86Registers.ds, 0x3a);
+real_set_register_value(vm86Registers.es, 0x3a);
+real_call_bios(0x10);
 
-var linear = (0x3a * 16) + vm86_get_register_value(vm86Registers.di);
+//var linear = (0x3a * 16) + vm86_get_register_value(vm86Registers.di);
 
-var vesaInfo = deserialise(VBEVesaInfo, linear, 1);
+//var vesaInfo = deserialise(VBEVesaInfo, linear, 1);
 
-vesaInfo.data[0].VesaSignature = arrayToString(vesaInfo.data[0].VesaSignature);
+//vesaInfo.data[0].VesaSignature = arrayToString(vesaInfo.data[0].VesaSignature);
 
-message("Signature:::%s\n", vesaInfo.data[0].VesaSignature);
+//message("Signature:::%s\n", vesaInfo.data[0].VesaSignature);
 
 
 

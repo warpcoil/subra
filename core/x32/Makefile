@@ -4,6 +4,7 @@ CXX=$(PREFIX32)g++
 AS=nasm -felf
 LD=$(PREFIX32)g++
 CP=cp
+X16DIR=../obj/x16/
 GCCDIR=../obj/libgcc/
 OSLDIR=../obj/oslib/
 MINIZDIR=../obj/miniz/
@@ -12,10 +13,13 @@ MYDIR=../obj/my/
 MUJSDIR=../obj/mujs/
 
 echo -e "Compiling 32 bit main kernel support using Compiler Prefix: $(PREFIX32)"
-.SUFFIXES: .o .c .cpp .S .asm
+.SUFFIXES: .o .c .cpp .S .asm .s
 
-NASMOBJECTS=gdtflush.o
+#NASMOBJECTS=gdtflush.o
 N_OPT= -felf
+
+X16OBJECTS = $(X16DIR)int16.o \
+	$(X16DIR)int16elf.o
 
 GCCOBJECTS = $(GCCDIR)__divdi3.o \
 	$(GCCDIR)__divmoddi4.o \
@@ -85,6 +89,15 @@ MUJSOBJECTS = $(MUJSDIR)jsarray.o \
 MYOBJECTS = $(MYDIR)my_string.o
 
 OBJECTS = main.o \
+	io.o \
+	gdt.o \
+	gdtflush.o \
+	idt.o \
+	idtflush.o \
+	realmode.o \
+	isr.o \
+	handler.o \
+	timer.o \
 	jssupport.o \
 	zip.o \
 	module.o \
@@ -108,7 +121,7 @@ LD_OPT= $(EXTRAFLAGS) -Bstatic -Tlink.ld -s -nostartfiles -nostdlib
 all: link
 
 link: $(OBJECTS) link.ld
-	$(LD) $(LD_OPT) -o kernel32.sys $(GCCOBJECTS) $(OSLOBJECTS) $(MINIZOBJECTS) $(MOBJECTS) $(MUJSOBJECTS) $(MYOBJECTS) $(OBJECTS)
+	$(LD) $(LD_OPT) -o kernel32.sys $(GCCOBJECTS) $(OSLOBJECTS) $(MINIZOBJECTS) $(MOBJECTS) $(MUJSOBJECTS) $(MYOBJECTS) $(X16OBJECTS) $(OBJECTS)
 	$(CP) kernel32.sys ../../iso/boot
 
 .s.o: $(AS) $<

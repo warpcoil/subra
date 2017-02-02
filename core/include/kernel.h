@@ -14,6 +14,16 @@
 #include "oslib/error.h"
 #include "oslib/tss-ctx.h"
 
+//Real Mode
+#include "realmode.h"
+
+//Ports (io)
+#include "io.h"
+
+//Basic Descriptor Tables
+#include "gdt.h"
+#include "idt.h"
+
 //Simple linked list malloc and free support with new and delete
 #include "memory.h"
 void *operator new(size_t size);
@@ -22,6 +32,17 @@ void operator delete(void *p);
 void operator delete[](void *p);
 void operator delete(void *p, size_t sz);
 void operator delete[](void *p, size_t sz);
+
+//Global access
+//extern static GDT * gdt;
+//extern static IDT * idt;
+//extern static Support * support;
+//extern static Module * module;
+//extern static RealMode * realMode;
+
+extern "C" void set_vm86_register_value(uint32_t reg, uint16_t value);
+extern "C" uint16_t get_vm86_register_value(uint32_t reg);
+extern "C" void vm86_call(int bind, int service);
 
 //Zip File Processing [i.e. modules]
 //#include "zip.h"

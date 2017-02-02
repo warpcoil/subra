@@ -69,6 +69,8 @@ toolscui:
 	
 	$(call check_extract,MPFR,mpfr-$(MPFRVER))
 	
+	$(call check_extract,BIN2C,bin2c)
+	
 	#Static Dependency Process
 	echo -e "\033[0;32mCompiling STATIC GMP\033[0m"
 	mkdir -p $(OUTBUILDDIR)/gmp
@@ -101,6 +103,10 @@ toolscui:
 	#For all requested architectures build gdb
 	$(foreach ARCH,$(ARCHES), echo -e "\033[0;32mCompiling GDB : $(ARCH)\033[0m"; mkdir -p $(OUTBUILDDIR)/gdb_$(ARCH); cd $(OUTBUILDDIR)/gdb_$(ARCH) && $(abspath gdb-$(GDBVER))/configure --prefix=$(OUTBINDIR)/$(ARCH) --target=$(ARCH)-$(EMULATION) --with-gmp=$(OUTBUILDDIR)/static --with-mpc=$(OUTBUILDDIR)/static --with-mpfr=$(OUTBUILDDIR)/static --with-isl=$(OUTBUILDDIR)/static && make -j4 all && make install ; )
 	$(foreach ARCH,$(ARCHES), rm -rf $(OUTBUILDDIR)/gdb_$(ARCH) ; )
+	
+	#Target agnostic utilities
+	#bin2c
+	$(foreach ARCH,$(ARCHES), echo -e "\033[0;32mCompiling bin2c : $(ARCH)\033[0m"; cc $(abspath bin2c)/bin2c.c -o $(OUTBINDIR)/$(ARCH)/bin/$(ARCH)-elf-bin2c ; )
 	
 	echo -e "\033[0;32mCleaning Up . . .\033[0m"
 	
